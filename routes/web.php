@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('sign_in', 'Auth\LoginController@show_login')->name('login.index');
+
+Route::get('sign_up', 'Auth\RegisterController@show_register')->name('register.index');
