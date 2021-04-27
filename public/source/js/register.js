@@ -1,0 +1,5 @@
+$(function() {
+
+    $('#birthday').pickadate();
+ 
+ });
