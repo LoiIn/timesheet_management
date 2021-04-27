@@ -15,6 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::get('/', 'PageController@home_page')->name('home');
+
+//home page
+Route::get('home', 'PageController@home_page')->name('home.index');
+
+//user
+Route::get('profiles', 'PageController@get_user_profiles')->name('user_profiles');
+
 //sign in
 Route::get('sign_in', 'Auth\LoginController@show_login')->name('login.index');
 Route::post('sign_in', 'Auth\LoginController@do_login')->name('login');
