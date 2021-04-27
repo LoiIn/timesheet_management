@@ -26,11 +26,19 @@
                     </div>
 
                     <div class="signin-form">
+                        @if(count($errors) > 0)
+                            <div class="auth-card-alert">
+                                @foreach ($errors->all() as $err)
+                                    {{$err}}<br>
+                                @endforeach
+                            </div>
+                        @endif
                         <h2 class="form-title">Sign In</h2>
                         <form method="POST" class="register-form" id="login-form">
+                            @csrf
                             <div class="form-group">
-                                <label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="username" id="username" placeholder="Username"/>
+                                <label for="email"><i class="zmdi zmdi-email material-icons-name"></i></label>
+                                <input type="text" name="email" id="email" placeholder="Email"/>
                             </div>
                             <div class="form-group">
                                 <label for="password"><i class="zmdi zmdi-lock"></i></label>
