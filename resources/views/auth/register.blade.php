@@ -24,34 +24,42 @@
                 <div class="signup-content">
                     <div class="signup-form">
                         <h2 class="form-title">Sign up</h2>
-                        <form method="POST" class="register-form" id="register-form">
+                        <form method="POST" class="register-form" id="register-form" enctype="multipart/form-data">
+                            @csrf
+                            @if(count($errors) > 0)
+                                <div class="auth-card-alert">
+                                    @foreach ($errors->all() as $err)
+                                        {{$err}}<br>
+                                    @endforeach
+                                </div>
+                            @endif
                             <div class="form-group">
-                                <label for="new_username"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="new_username" id="new_username" placeholder="User Name"/>
+                                <label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="username" id="username" placeholder="User Name"/>
                             </div>
                             <div class="form-group">
-                                <label for="new_email"><i class="zmdi zmdi-email"></i></label>
-                                <input type="email" name="new_email" id="new_email" placeholder="Your Email"/>
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="email" id="email" placeholder="Your Email"/>
                             </div>
                             <div class="form-group">
-                                <label for="new_password"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="new_password" id="new_password" placeholder="Password"/>
+                                <label for="password"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="password" id="password" placeholder="Your Password"/>
                             </div>
                             <div class="form-group">
-                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
+                                <label for="re_password"><i class="zmdi zmdi-lock-outline"></i></label>
+                                <input type="password" name="re_password" id="re_password" placeholder="Repeat your password"/>
                             </div>
                             <div class="form-group">
                                 <label for="address"><i class="zmdi zmdi-info"></i></label>
-                                <input type="text" name="address" id="address" placeholder="Enter your address"/>
+                                <input type="text" name="address" id="address" placeholder="Your address"/>
                             </div>
                             <div class="form-group" style="overflow: unset !important">
                                 <label for="birthday"><i class="zmdi zmdi-calendar"></i></label>
-                                <input type="text" id="birthday" placeholder="Your birthday">
+                                <input type="text" name="birthday" id="birthday" placeholder="Your birthday">
                             </div>
                             <div class="form-group">
                                 <label for="avatar"><i class="zmdi zmdi-image"></i></label>
-                                <input type="file"  id="avatar">
+                                <input type="file" name="avatar" id="avatar" style="width: 100% !important">
                             </div>
                             {{-- <div class="form-group">
                                 <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />

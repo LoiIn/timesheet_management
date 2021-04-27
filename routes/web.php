@@ -15,6 +15,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//sign in
 Route::get('sign_in', 'Auth\LoginController@show_login')->name('login.index');
+Route::post('sign_in', 'Auth\LoginController@do_login')->name('login');
 
+//sign up
 Route::get('sign_up', 'Auth\RegisterController@show_register')->name('register.index');
+Route::post('sign_up', 'Auth\RegisterController@do_register')->name('register');
+
+//sign out
+Route::get('sign_out', 'Auth\LoginController@logout')->name('logout');

@@ -37,6 +37,34 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
+    public function do_login(Request $request){
+
+        $this->validate($request, [
+            'email' => 'required|email:rfc,dns',
+            'password' => 'required|min:3|max:16'
+        ], [
+            'email.email' => 'Input correct format of email',
+            'password.min' => 'Min length of password is 3',
+            'password.max' => 'Max length of password is 16'
+        ]);
+
+        $email = $request->email;
+        $password = $request->password;
+
+        $data_user = (['email'=>$email, 'password'=>$password]);
+
+        if(Auth::attempt($data_user)){
+            return redirect('/');
+        }else{
+            return redirect('/sign_in')->with('loginFail', 'Sign in fail!');
+        }
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/');
+    }
 
     /**
      * Create a new controller instance.
