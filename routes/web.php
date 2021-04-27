@@ -22,6 +22,7 @@ Route::get('home', 'PageController@home_page')->name('home.index');
 
 //user
 Route::get('profiles', 'PageController@get_user_profiles')->name('user_profiles');
+Route::get('edit_profiles', 'PageController@get_user_edit_profiles')->name('user_edit_profiles');
 
 //sign in
 Route::get('sign_in', 'Auth\LoginController@show_login')->name('login.index');

@@ -61,7 +61,7 @@ class RegisterController extends Controller
         $user->birthday = '2021-04-27';
         if($request->hasFile('avatar')){
             $file = $request->avatar;
-            $avatar_path = 'source/images/avatar/';
+            $avatar_path = '/source/images/avatar/';
             $avatar_name = time().$request->username."-".$file->getClientOriginalName();
             $file->move(public_path().$avatar_path, $avatar_name);
             $user->avatar = $avatar_name;

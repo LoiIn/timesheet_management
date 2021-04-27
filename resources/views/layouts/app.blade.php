@@ -28,13 +28,9 @@
 
   <!-- Template Main CSS File -->
   <link href="source/css/style.css" rel="stylesheet">
+  <link href="source/fonts/material-icon/css/material-design-iconic-font.min.css" rel="stylesheet">
+  {{-- <link href="source/css/login.css" rel="stylesheet"> --}}
 
-  <!-- =======================================================
-  * Template Name: Moderna - v2.2.1
-  * Template URL: https://bootstrapmade.com/free-bootstrap-template-corporate-moderna/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>

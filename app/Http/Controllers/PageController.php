@@ -19,4 +19,8 @@ class PageController extends Controller
         return view('user.index');
     }
 
+    public function get_user_edit_profiles(){
+        return view('user.edit');
+    }
+
 }
