@@ -54,16 +54,17 @@ class LoginController extends Controller
         $data_user = (['email'=>$email, 'password'=>$password]);
 
         if(Auth::attempt($data_user)){
-            return redirect('/');
+            $username = Auth::user()->username;
+            return redirect('home');
         }else{
-            return redirect('/sign_in')->with('loginFail', 'Sign in fail!');
+            return redirect('sign_in')->with('loginFail', 'Sign in fail!');
         }
     }
 
     public function logout()
     {
         Auth::logout();
-        return redirect('/');
+        return redirect('sign_in');
     }
 
     /**

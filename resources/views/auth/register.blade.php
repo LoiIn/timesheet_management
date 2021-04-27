@@ -84,6 +84,6 @@
     <script src="source/vendor/jquery/jquery.min.js"></script>
     <script src="source/vendor/others/picker.js"></script>
     <script src="source/vendor/others/picker.date.js"></script>
-    <script src="source/js/main.js"></script>
+    <script src="source/js/register.js"></script>
 </body>
 </html>
