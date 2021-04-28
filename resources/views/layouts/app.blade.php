@@ -26,6 +26,10 @@
   <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
   <link href="{{asset('assets/fonts/material-icon/css/material-design-iconic-font.min.css')}}" rel="stylesheet">
 
+  <!-- Data css -->
+  <link rel="stylesheet" href="{{asset('assets/css/datepicker.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/css/datepicker.date.css')}}">
+
 </head>
 
 <body>
@@ -46,6 +50,12 @@
   <script src="{{asset('assets/vendor/page/owl.carousel/owl.carousel.min.js')}}"></script>
   <script src="{{asset('assets/vendor/page/isotope-layout/isotope.pkgd.min.js')}}"></script>
   <script src="{{asset('assets/vendor/page/aos/aos.js')}}"></script>
+  
+  <!-- Date JS -->
+  <script src="{{asset('assets/vendor/others/popper.min.js')}}"></script>
+  <script src="{{asset('assets/vendor/others/picker.js')}}"></script>
+  <script src="{{asset('assets/vendor/others/picker.date.js')}}"></script>
+  <script src="{{asset('assets/vendor/others/picker.time.js')}}"></script>
 
   <!-- Template Main JS File -->
   <script src="{{asset('assets/js/main.js')}}"></script>
