@@ -39,7 +39,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="re_avatar"><i class="zmdi zmdi-image"></i></label>
-                                    <input type="file" name="re_avatar" id="re_avatar" style="width: 100% !important">
+                                    <input type="file" name="re_avatar" id="re_avatar" class="img-fluid">
                                 </div>
                                 <div class="form-group form-button">
                                     <input type="submit" name="update_user_profiles" id="signup" class="form-submit" value="Update"/>

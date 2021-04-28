@@ -11,11 +11,10 @@
                 <div class="about-form">
                     <div class="row">
                         <div class="col-lg-4">
-                        @if(empty(Auth::user()->avatar))
-                            <img src="source/images/avatar/man.jpg" class="img-fluid" alt="">
-                        @else
-                            <img src="source/images/avatar/{{Auth::user()->avatar}}" class="img-fluid" alt="">   
-                        @endif
+                        @php
+                            $avatar = Auth::user()->avatar
+                        @endphp
+                        <img src="{{getAvatarUrl($avatar)}}" class="img-fluid" alt="">
                         </div>
                         <div class="col-lg-6 pt-4 pt-lg-0 offset-lg-1">
                         <h3>Profiles</h3>
@@ -49,6 +48,3 @@
 
     
 @endsection
-
-{{-- @include('user.profiles', ['user' => Auth::user()]) --}}
-{{-- @include('user.edit_profiles', ['user' => Auth::user()]) --}}

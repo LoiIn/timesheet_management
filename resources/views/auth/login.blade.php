@@ -7,10 +7,10 @@
     <title>TSMana - SignIn</title>
 
     <!-- Font Icon -->
-    <link rel="stylesheet" href="source/fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="{{asset('assets/fonts/material-icon/css/material-design-iconic-font.min.css')}}">
 
     <!-- Main css -->
-    <link rel="stylesheet" href="source/css/login.css">
+    <link rel="stylesheet" href="{{asset('assets/css/login.css')}}">
 </head>
 <body>
 
@@ -21,7 +21,7 @@
             <div class="container">
                 <div class="signin-content">
                     <div class="signin-image">
-                        <figure><img src="source/images/signin-image.jpg" alt="sing up image"></figure>
+                        <figure><img src="{{asset('assets/images/signin-image.jpg')}}" alt="sing up image"></figure>
                         <a href="{{route('register.index')}}" class="signup-image-link">Create an account</a>
                     </div>
 
@@ -68,6 +68,6 @@
     </div>
 
     <!-- JS -->
-    <script src="source/vendor/jquery/jquery.min.js"></script>
+    <script src="{{asset('assets/vendor/jquery/jquery.min.js')}}"></script>
 </body>
 </html>

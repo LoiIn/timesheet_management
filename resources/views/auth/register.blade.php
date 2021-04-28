@@ -7,12 +7,12 @@
     <title>TSMana - SignUp</title>
 
     <!-- Font Icon -->
-    <link rel="stylesheet" href="source/fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="{{asset('assets/fonts/material-icon/css/material-design-iconic-font.min.css')}}">
 
     <!-- Main css -->
-    <link rel="stylesheet" href="source/css/login.css">
-    <link rel="stylesheet" href="source/css/datepicker.css">
-    <link rel="stylesheet" href="source/css/datepicker.date.css">
+    <link rel="stylesheet" href="{{asset('assets/css/login.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/datepicker.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/datepicker.date.css')}}">
 </head>
 <body>
 
@@ -61,18 +61,14 @@
                                 <label for="avatar"><i class="zmdi zmdi-image"></i></label>
                                 <input type="file" name="avatar" id="avatar" style="width: 100% !important">
                             </div>
-                            {{-- <div class="form-group">
-                                <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
-                                <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
-                            </div> --}}
                             <div class="form-group form-button">
                                 <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
                             </div>
                         </form>
                     </div>
                     <div class="signup-image">
-                        <figure><img src="source/images/signup-image.jpg" alt="sing up image"></figure>
-                        <a href="{{route('login.index')}}" class="signup-image-link" style="margin-top: 170px">I am already member</a>
+                        <figure><img src="{{asset('assets/images/signup-image.jpg')}}" alt="sing up image"></figure>
+                        <a href="{{route('login.index')}}" class="signup-image-link">I am already member</a>
                     </div>
                 </div>
             </div>
@@ -81,9 +77,9 @@
     </div>
 
     <!-- JS -->
-    <script src="source/vendor/jquery/jquery.min.js"></script>
-    <script src="source/vendor/others/picker.js"></script>
-    <script src="source/vendor/others/picker.date.js"></script>
-    <script src="source/js/register.js"></script>
+    <script src="{{asset('assets/vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('assets/vendor/others/picker.js')}}"></script>
+    <script src="{{asset('assets/vendor/others/picker.date.js')}}"></script>
+    <script src="{{asset('assets/js/register.js')}}"></script>
 </body>
 </html>

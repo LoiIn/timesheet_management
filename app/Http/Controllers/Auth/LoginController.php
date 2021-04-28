@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\LoginRequest;
 use App\User;
 
 class LoginController extends Controller
@@ -24,8 +22,6 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
-
     /**
      * Where to redirect users after login.
      *
@@ -33,20 +29,13 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/home';
 
-    public function show_login(){
+    public function login(){
         return view('auth.login');
     }
 
-    public function do_login(Request $request){
+    public function postLogin(LoginRequest $request){
 
-        $this->validate($request, [
-            'email' => 'required|email:rfc,dns',
-            'password' => 'required|min:3|max:16'
-        ], [
-            'email.email' => 'Input correct format of email',
-            'password.min' => 'Min length of password is 3',
-            'password.max' => 'Max length of password is 16'
-        ]);
+       $request->all();
 
         $email = $request->email;
         $password = $request->password;
@@ -54,10 +43,9 @@ class LoginController extends Controller
         $data_user = (['email'=>$email, 'password'=>$password]);
 
         if(Auth::attempt($data_user)){
-            $username = Auth::user()->username;
-            return redirect('home');
+            return redirect('home')->with('loginSuccess', 'Welcome our service!');
         }else{
-            return redirect('sign_in')->with('loginFail', 'Sign in fail!');
+            return redirect('sign_in')->with('loginFail', 'Login in fail!');
         }
     }
 
