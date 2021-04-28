@@ -12,7 +12,8 @@
                     <h2>TimeSheet Management</h2>
                 </div>
                 <div class="col-lg-6 text-right">
-                    <button type="button" class="btn btn-primary">Add TS</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-timesheet" data-whatever="">Add TS</button>
+                    @include('timesheet.add_timesheet')
                 </div>
             </div>
             <table class="table table-striped mt-2 text-center">

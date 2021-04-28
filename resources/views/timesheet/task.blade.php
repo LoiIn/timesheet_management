@@ -1,7 +1,6 @@
 <table class="table table-striped text-center">
     <thead>
       <tr>
-        <th scope="col">STT</th>
         <th scope="col">Task ID</th>
         <th scope="col">Content</th>
         <th scope="col">Time exist</th>
@@ -11,7 +10,6 @@
     <tbody>
       <tr>
         <th scope="row">1</th>
-        <td>#1</td>
         <td>abc</td>
         <td>1.5</td>
         <td>
