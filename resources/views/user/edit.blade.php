@@ -12,7 +12,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <h2 class="about-title">Edit</h2>
-                            <form method="POST" class="edit-form" id="edit-form" enctype="multipart/form-data">
+                            <form method="POST" class="edit-form" id="edit-form" enctype="multipart/form-data" action="{{route('update_user_profiles')}}">
                                 @csrf
                                 @if(count($errors) > 0)
                                     <div class="auth-card-alert">
@@ -38,11 +38,11 @@
                                     <input type="text" name="birthday" id="birthday" placeholder="Your birthday" value="{{Auth::user()->birthday}}"/>
                                 </div>
                                 <div class="form-group">
-                                    <label for="avatar"><i class="zmdi zmdi-image"></i></label>
-                                    <input type="file" name="avatar" id="avatar" style="width: 100% !important">
+                                    <label for="re_avatar"><i class="zmdi zmdi-image"></i></label>
+                                    <input type="file" name="re_avatar" id="re_avatar" class="img-fluid">
                                 </div>
                                 <div class="form-group form-button">
-                                    <a name="" id="" class="btn btn-success" href="#" role="button">Submit</a>
+                                    <input type="submit" name="update_user_profiles" id="signup" class="form-submit" value="Update"/>
                                     <a href="{{route('user_profiles')}}" class="btn btn-danger" role="button">Cancle</a>
                                 </div>
                             </form>

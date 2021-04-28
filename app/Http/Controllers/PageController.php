@@ -11,15 +11,15 @@ use App\User;
 class PageController extends Controller
 {
 
-    public function home_page(){
+    public function home(){
         return view('home.index');
     }
 
-    public function get_user_profiles(){
+    public function getUserProfiles(){
         return view('user.index');
     }
 
-    public function get_user_edit_profiles(){
+    public function getFormEditUserProfiles(){
         return view('user.edit');
     }
 

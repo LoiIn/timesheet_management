@@ -18,19 +18,20 @@ Route::get('/', function () {
 // Route::get('/', 'PageController@home_page')->name('home');
 
 //home page
-Route::get('home', 'PageController@home_page')->name('home.index');
+Route::get('home', 'PageController@home')->name('home.index');
 
 //user
-Route::get('profiles', 'PageController@get_user_profiles')->name('user_profiles');
-Route::get('edit_profiles', 'PageController@get_user_edit_profiles')->name('user_edit_profiles');
+Route::get('profiles', 'PageController@getUserProfiles')->name('user_profiles');
+Route::get('edit_profiles', 'PageController@getFormEditUserProfiles')->name('user_edit_profiles');
+Route::post('edit_profiles', 'Auth\UpdateController@postUserProfiles')->name('update_user_profiles');
 
 //sign in
-Route::get('sign_in', 'Auth\LoginController@show_login')->name('login.index');
-Route::post('sign_in', 'Auth\LoginController@do_login')->name('login');
+Route::get('sign_in', 'Auth\LoginController@login')->name('login.index');
+Route::post('sign_in', 'Auth\LoginController@postLogin')->name('login');
 
 //sign up
-Route::get('sign_up', 'Auth\RegisterController@show_register')->name('register.index');
-Route::post('sign_up', 'Auth\RegisterController@do_register')->name('register');
+Route::get('sign_up', 'Auth\RegisterController@register')->name('register.index');
+Route::post('sign_up', 'Auth\RegisterController@postRegister')->name('register');
 
 //sign out
 Route::get('sign_out', 'Auth\LoginController@logout')->name('logout');
