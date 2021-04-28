@@ -25,6 +25,9 @@ Route::get('profiles', 'PageController@getUserProfiles')->name('user_profiles');
 Route::get('edit_profiles', 'PageController@getFormEditUserProfiles')->name('user_edit_profiles');
 Route::post('edit_profiles', 'Auth\UpdateController@postUserProfiles')->name('update_user_profiles');
 
+//time sheet
+Route::get('timesheet_list', 'PageController@getTimeSheetList')->name('timesheet_list');
+
 //sign in
 Route::get('sign_in', 'Auth\LoginController@login')->name('login.index');
 Route::post('sign_in', 'Auth\LoginController@postLogin')->name('login');

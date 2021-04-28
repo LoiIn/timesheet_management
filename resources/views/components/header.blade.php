@@ -10,7 +10,7 @@
       <nav class="nav-menu float-right d-none d-lg-block">
         <ul>
           <li class="active"><a href="{{route('home.index')}}">Home</a></li>
-          <li><a href="#">Timesheet</a></li>          
+          <li><a href="{{route('timesheet_list')}}">Timesheet</a></li>          
           <li><a href="#">Report</a></li>
           @if (empty($username))
             <li><a href="{{route('login.index')}}">SignIn</a></li>

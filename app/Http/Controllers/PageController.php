@@ -23,4 +23,8 @@ class PageController extends Controller
         return view('user.edit');
     }
 
+    public function getTimeSheetList(){
+        return view('timesheet.index');
+    }
+
 }
