@@ -36,7 +36,7 @@ class RegisterController extends Controller
 
     public function postRegister(RegisterRequest $request){
         $request->all();
-
+        
         $user = new User;        
         $user->username = $request->username;
         $user->email    = $request->email;
@@ -50,12 +50,12 @@ class RegisterController extends Controller
             $file->move(public_path().$avatar_path, $avatar_name);
             $user->avatar = $avatar_name;
         }
-        $user->role     = Config::get('constants.ROLE_USER');
+        $user->role = Config::get('constants.ROLE_USER', '2');
         if($user->save()){
-            return redirect('sign_in')->with('registerSuccess', 'Register successed, please login');
+            return redirect('sign-in')->with('registerSuccess', 'Register successed, please login');
         }
         else{
-            return redirect('sign_up')->with('registerFail', 'Register failed, please try again!');
+            return redirect('sign-up')->with('registerFail', 'Register failed, please try again!');
         }
     }
 

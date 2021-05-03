@@ -36,7 +36,7 @@
                                 <span>{{Auth::user()->birthday}}</span>
                             </li>
                         </ul>
-                        <a name="" id="" class="btn btn-primary" href="{{route('user_edit_profiles')}}" role="button">Edit</a>
+                        <a name="" id="" class="btn btn-primary" href="{{route('user.edit')}}" role="button">Edit</a>
                         </div>
                     </div>
                 </div>
