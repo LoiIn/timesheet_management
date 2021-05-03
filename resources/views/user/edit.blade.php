@@ -12,7 +12,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <h2 class="about-title">Edit</h2>
-                            <form method="POST" class="edit-form" id="edit-form" enctype="multipart/form-data" action="{{route('update_user_profiles')}}">
+                            <form method="POST" class="edit-form" id="edit-form" enctype="multipart/form-data" action="{{route('user.update')}}">
                                 @csrf
                                 @if(count($errors) > 0)
                                     <div class="auth-card-alert">
@@ -42,15 +42,18 @@
                                     <input type="file" name="re_avatar" id="re_avatar" class="img-fluid">
                                 </div>
                                 <div class="form-group form-button">
-                                    <input type="submit" name="update_user_profiles" id="signup" class="form-submit" value="Update"/>
-                                    <a href="{{route('user_profiles')}}" class="btn btn-danger" role="button">Cancle</a>
+                                    <input type="submit" name="" id="update-user" class="form-submit" value="Update"/>
+                                    <a href="{{route('user.index')}}" class="btn btn-danger" role="button">Cancle</a>
                                 </div>
                             </form>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="about-image text-center">
-                                <img src="source/images/avatar/{{Auth::user()->avatar}}" alt="sing up image">
+                                @php
+                                    $avatar = Auth::user()->avatar
+                                @endphp
+                                <img src="{{getAvatarUrl($avatar)}}" alt="sing up image">
                             </div>
                         </div>
                     </div>

@@ -8,14 +8,16 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>abc</td>
-        <td>1.5</td>
-        <td>
-            <button type="button" class="btn btn-warning">Edit</button>
-            <button type="button" class="btn btn-danger">Remove</button>
-        </td>
-      </tr>
+      @foreach ($tasks as $task)
+        <tr>
+          <th scope="row">{{$task->id}}</th>
+          <td>{{$task->content}}</td>
+          <td>{{$task->time_exist}}</td>
+          <td>
+              <button type="button" class="btn btn-warning">Edit</button>
+              <button type="button" class="btn btn-danger">Remove</button>
+          </td>
+        </tr>
+      @endforeach
     </tbody>
-  </table>
+</table>

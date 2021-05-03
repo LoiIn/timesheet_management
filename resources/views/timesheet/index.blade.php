@@ -12,14 +12,12 @@
                     <h2>TimeSheet Management</h2>
                 </div>
                 <div class="col-lg-6 text-right">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-timesheet" data-whatever="">Add TS</button>
-                    @include('timesheet.add_timesheet')
+                  <a name="" id="" class="btn btn-primary" href="{{route('timesheets.create')}}" role="button">Add TS</a>
                 </div>
             </div>
-            <table class="table table-striped mt-2 text-center">
+            <table class="table mt-2 text-center">
                 <thead>
                   <tr>
-                    <th scope="col">STT</th>
                     <th scope="col">Date</th>
                     <th scope="col">Task</th>
                     <th scope="col">Problems</th>
@@ -28,21 +26,24 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>2021-04-28</td>
-                    <td>
-                        @include('timesheet.task')
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-task" data-whatever="">Add Task</button>
-                        @include('timesheet.add_task')
-                    </td>
-                    <td>@mdo</td>
-                    <td>abc</td>
-                    <td>
-                        
-                        <button type="button" class="btn btn-info">Edit</button>
-                    </td>
-                  </tr>
+                  @foreach ($timesheets as $item)
+                    <tr>
+                      <td>{{$item->created_at}}</td>
+                      <td>
+                          @php
+                            $tasks = $ts_tasks[$item->id]
+                          @endphp
+                          @include('timesheet.task', ['tasks' => $tasks])
+                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-task" data-whatever="">Add Task</button>
+                          @include('timesheet.task_create')
+                      </td>
+                      <td>{{$item->problems}}</td>
+                      <td>{{$item->plan}}</td>
+                      <td>
+                          <a class="btn btn-info" href="{{route('timesheets.edit', $item->id)}}" role="button">Edit</a>
+                      </td>
+                    </tr>
+                  @endforeach
                 </tbody>
               </table>
         </div>

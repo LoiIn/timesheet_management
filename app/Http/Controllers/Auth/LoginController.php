@@ -45,14 +45,14 @@ class LoginController extends Controller
         if(Auth::attempt($data_user)){
             return redirect('home')->with('loginSuccess', 'Welcome our service!');
         }else{
-            return redirect('sign_in')->with('loginFail', 'Login in fail!');
+            return redirect('sign-in')->with('loginFail', 'Login in fail!');
         }
     }
 
     public function logout()
     {
         Auth::logout();
-        return redirect('sign_in');
+        return redirect('sign-in');
     }
 
     /**

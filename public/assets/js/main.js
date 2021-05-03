@@ -184,6 +184,11 @@
         aos_init();
     });
 
-    $('#new-task-end-date').pickadate();
+    $('#end_date').pickadate();
+
+    // $('.add-ts').click(function (e) { 
+    //     e.preventDefault();
+        
+    // });
 
 })(jQuery);

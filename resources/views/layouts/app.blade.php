@@ -41,6 +41,7 @@
 
   <!-- Page JS Files -->
   <script src="{{asset('assets/vendor/page/jquery/jquery.min.js')}}"></script>
+  <script src="{{asset('assets/vendor/page/bootstrap/js/bootstrap.min.js')}}"></script>
   <script src="{{asset('assets/vendor/page/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
   <script src="{{asset('assets/vendor/page/jquery.easing/jquery.easing.min.js')}}"></script>
   <script src="{{asset('assets/vendor/page/php-email-form/validate.js')}}"></script>
@@ -52,7 +53,7 @@
   <script src="{{asset('assets/vendor/page/aos/aos.js')}}"></script>
   
   <!-- Date JS -->
-  <script src="{{asset('assets/vendor/others/popper.min.js')}}"></script>
+  {{-- <script src="{{asset('assets/vendor/others/popper.min.js')}}"></script> --}}
   <script src="{{asset('assets/vendor/others/picker.js')}}"></script>
   <script src="{{asset('assets/vendor/others/picker.date.js')}}"></script>
   <script src="{{asset('assets/vendor/others/picker.time.js')}}"></script>

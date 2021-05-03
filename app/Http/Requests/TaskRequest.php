@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Validator;
 
-class EditUserProfilesRequest extends FormRequest
+class TaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +25,8 @@ class EditUserProfilesRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'username'      => 'string|required|unique:users,username|min:5|max:32',
-            // 'password'      => 'string|required|min:3|max:16',
-            // 'email'         => 'string|required|unique:users,email|email:rfc,dns',
-            // 're_password'   => 'string|required|same:password'
+            'content'       => 'string|required',
+            'time_exist'      => 'double|required',
         ];
     }
 
