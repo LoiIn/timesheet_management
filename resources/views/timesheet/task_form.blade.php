@@ -7,6 +7,11 @@
             @endforeach
         </div>
     @endif
+    @if(session('task_action_fail'))
+        <div class="alert alert-danger">
+            {{session('task_action_fail')}}
+        </div>
+    @endif 
     <div class="form-group">
       <label for="timesheet">Created date of Timesheet</label>
       <input type="text" class="form-control" id="" placeholder="" value="2021-04-30" readonly name="ts">

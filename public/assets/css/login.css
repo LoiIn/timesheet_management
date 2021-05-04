@@ -759,8 +759,12 @@ label.valid:after {
     }
 }
 
-.auth-card-alert {
+.auth-card-alert-danger {
     color: red;
+}
+
+.auth-card-alert-success {
+    color: seagreen;
 }
 
 

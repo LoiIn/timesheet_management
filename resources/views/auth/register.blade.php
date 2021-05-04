@@ -27,19 +27,24 @@
                         <form method="POST" class="register-form" id="register-form" enctype="multipart/form-data">
                             @csrf
                             @if(count($errors) > 0)
-                                <div class="auth-card-alert">
+                                <div class="auth-card-alert-danger">
                                     @foreach ($errors->all() as $err)
                                         {{$err}}<br>
                                     @endforeach
                                 </div>
                             @endif
+                            @if(session('registerFail'))
+                                <div class="auth-card-alert-danger">
+                                    {{session('registerFail')}}
+                                </div>
+                            @endif 
                             <div class="form-group">
                                 <label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="username" id="username" placeholder="User Name"/>
+                                <input type="text" name="username" id="username" placeholder="User Name" value="{{old('username', isset($user->username) ? $user->username : '')}}"/>
                             </div>
                             <div class="form-group">
                                 <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                <input type="email" name="email" id="email" placeholder="Your Email"/>
+                                <input type="email" name="email" id="email" placeholder="Your Email" value="{{old('email', isset($user->email) ? $user->email: '')}}"/>
                             </div>
                             <div class="form-group">
                                 <label for="password"><i class="zmdi zmdi-lock"></i></label>
@@ -51,11 +56,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="address"><i class="zmdi zmdi-info"></i></label>
-                                <input type="text" name="address" id="address" placeholder="Your address"/>
+                                <input type="text" name="address" id="address" placeholder="Your address" value="{{old('address', isset($user->address) ? $user->address: '')}}"/>
                             </div>
                             <div class="form-group" style="overflow: unset !important">
                                 <label for="birthday"><i class="zmdi zmdi-calendar"></i></label>
-                                <input type="text" name="birthday" id="birthday" placeholder="Your birthday">
+                                <input type="text" name="birthday" id="birthday" placeholder="Your birthday" value="{{old('birthday', isset($user->birthday) ? $user->birthday: '')}}">
                             </div>
                             <div class="form-group">
                                 <label for="avatar"><i class="zmdi zmdi-image"></i></label>

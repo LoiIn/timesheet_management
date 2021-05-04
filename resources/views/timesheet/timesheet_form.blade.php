@@ -7,6 +7,11 @@
           @endforeach
       </div>
     @endif
+    @if(session('ts_action_fail'))
+      <div class="alert alert-danger">
+          {{session('ts_action_fail')}}
+      </div>
+    @endif 
     <div class="form-group">
       <label for="problems">Problems</label>
       <textarea class="form-control" id="problems" rows="3" name="problems">

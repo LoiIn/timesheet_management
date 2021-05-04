@@ -10,6 +10,7 @@ use App\Models\TimesheetTask;
 use App\Models\Task;
 use App\Http\Requests\TaskRequest;
 use Carbon\Carbon;
+use Config;
 
 class TaskController extends Controller
 {
@@ -21,9 +22,11 @@ class TaskController extends Controller
     public function store(TaskRequest $request, $ts_id){
         $request->all();
 
-        $this->insertOrUpdate($request, $ts_id);
-
-        return redirect()->route('timesheets.index');
+        if($this->insertOrUpdate($request, $ts_id)){
+            return redirect()->route('timesheets.index')->with('task_action_success', 'A new task was added');
+        }else{
+            return view('timesheet.task_create')->with('task_action_fail', 'Add new task failed');
+        }
     }
 
     public function edit($ts_id, $id){
@@ -34,9 +37,11 @@ class TaskController extends Controller
     public function update(TaskRequest $request, $ts_id, $id){
         $request->all();
 
-        $this->insertOrUpdate($request, $ts_id, $id);
-
-        return redirect()->route('timesheets.index');
+        if($this->insertOrUpdate($request, $ts_id, $id)){
+            return redirect()->route('timesheets.index')->with('task_action_success', 'The task was updated');
+        }else{
+            return view('timesheet.task_create')->with('task_action_fail', 'Update task failed');
+        }
     }
 
     public function destroy($ts_id, $id){ 
@@ -56,14 +61,16 @@ class TaskController extends Controller
         $end_date = Carbon::createFromFormat('Y-m-d', $_date);
         $hours = $end_date->diffInHours($start_date, true);
         $task->time_exist = $hours*1.0;
-        $task->save();
+        if(!$task->save()){
+           return false; 
+        }
 
         if(!$task_id){
             $ts_task = new TimesheetTask;
             $ts_task->task_id = $task->id;
             $ts_task->ts_id = (int)$ts_id;
-            $ts_task->save();
+            if(!$ts_task->save()) return false;
         }
+        return true;
     }
-
 }

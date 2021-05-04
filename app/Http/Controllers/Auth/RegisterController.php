@@ -55,7 +55,7 @@ class RegisterController extends Controller
             return redirect('sign-in')->with('registerSuccess', 'Register successed, please login');
         }
         else{
-            return redirect('sign-up')->with('registerFail', 'Register failed, please try again!');
+            return redirect('sign-up', compact('user'))->with('registerFail', 'Register failed, please try again!');
         }
     }
 
