@@ -35,14 +35,14 @@ class LoginController extends Controller
 
     public function postLogin(LoginRequest $request){
 
-       $request->all();
+        $request->all();
 
         $email = $request->email;
         $password = $request->password;
 
-        $data_user = (['email'=>$email, 'password'=>$password]);
+        $user = (['email'=>$email, 'password'=>$password]);
 
-        if(Auth::attempt($data_user)){
+        if(Auth::attempt($user)){
             return redirect('home')->with('loginSuccess', 'Welcome our service!');
         }else{
             return redirect('sign-in')->with('loginFail', 'Login in fail!');

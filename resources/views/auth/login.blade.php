@@ -11,6 +11,7 @@
 
     <!-- Main css -->
     <link rel="stylesheet" href="{{asset('assets/css/login.css')}}">
+
 </head>
 <body>
 
@@ -27,18 +28,28 @@
 
                     <div class="signin-form">
                         @if(count($errors) > 0)
-                            <div class="auth-card-alert">
+                            <div class="auth-card-alert-danger">
                                 @foreach ($errors->all() as $err)
                                     {{$err}}<br>
                                 @endforeach
                             </div>
                         @endif
+                        @if(session('loginFail'))
+                            <div class="auth-card-alert-danger">
+                                {{session('loginFail')}}
+                            </div>
+                        @endif 
+                        @if(session('registerSuccess'))
+                            <div class="auth-card-alert-success">
+                                {{session('registerSuccess')}}
+                            </div>
+                        @endif 
                         <h2 class="form-title">Sign In</h2>
                         <form method="POST" class="register-form" id="login-form">
                             @csrf
                             <div class="form-group">
                                 <label for="email"><i class="zmdi zmdi-email material-icons-name"></i></label>
-                                <input type="text" name="email" id="email" placeholder="Email"/>
+                                <input type="text" name="email" id="email" placeholder="Email" />
                             </div>
                             <div class="form-group">
                                 <label for="password"><i class="zmdi zmdi-lock"></i></label>

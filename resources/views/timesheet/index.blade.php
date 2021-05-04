@@ -34,8 +34,7 @@
                             $tasks = $ts_tasks[$item->id]
                           @endphp
                           @include('timesheet.task', ['tasks' => $tasks])
-                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-task" data-whatever="">Add Task</button>
-                          @include('timesheet.task_create')
+                          <a name="" id="" class="btn btn-primary" href="{{route('tasks.create', $item->id)}}" role="button">Add Task</a>
                       </td>
                       <td>{{$item->problems}}</td>
                       <td>{{$item->plan}}</td>

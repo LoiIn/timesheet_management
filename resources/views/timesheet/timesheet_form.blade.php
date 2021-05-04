@@ -1,5 +1,17 @@
 <form method="POST" id="add-ts-form" enctype="multipart/form-data">
     @csrf
+    @if(count($errors) > 0)
+      <div class="alert alert-danger">
+          @foreach ($errors->all() as $err)
+              {{$err}}<br>
+          @endforeach
+      </div>
+    @endif
+    @if(session('ts_action_fail'))
+      <div class="alert alert-danger">
+          {{session('ts_action_fail')}}
+      </div>
+    @endif 
     <div class="form-group">
       <label for="problems">Problems</label>
       <textarea class="form-control" id="problems" rows="3" name="problems">
