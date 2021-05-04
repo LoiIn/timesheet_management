@@ -31,16 +31,20 @@ Route::prefix('user-profiles')->group(function () {
     Route::post('/edit', 'UserController@update')->name('user.update');
 });
 
-//timesheet
+//timesheet & task
 Route::prefix('timesheets')->group(function () {
+    //timesheet
     Route::get('/', 'TimesheetController@index')->name('timesheets.index');
     Route::get('/create', 'TimesheetController@create')->name('timesheets.create');
     Route::post('/create', 'TimesheetController@store')->name('timesheets.store');
-    Route::get('/edit/{id}', 'TimesheetController@edit')->name('timesheets.edit');
-    Route::post('/edit/{id}', 'TimesheetController@update')->name('timesheets.update');
-    Route::delete('/delete/{id}', 'TimesheetController@destroy')->name('timesheets.destroy');
-});
+    Route::get('/{id}/edit', 'TimesheetController@edit')->name('timesheets.edit');
+    Route::post('/{id}/edit', 'TimesheetController@update')->name('timesheets.update');
+    Route::delete('/{id}/delete', 'TimesheetController@destroy')->name('timesheets.destroy');
 
-//time sheet
-// Route::get('timesheet_list', 'PageController@getTimeSheetList')->name('timesheet_list');
-Route::post('task/create', 'TaskController@postTask')->name('add_task');
+    // task
+    Route::get('/{ts_id}/tasks/create', 'TaskController@create')->name('tasks.create');
+    Route::post('/{ts_id}/tasks/create', 'TaskController@store')->name('tasks.store');
+    Route::get('/{ts_id}/tasks/{id}/edit', 'TaskController@edit')->name('tasks.edit');
+    Route::post('/{ts_id}/tasks/{id}/edit', 'TaskController@update')->name('tasks.update');
+    Route::delete('/{ts_id}/tasks/{id}/delete', 'TaskController@destroy')->name('tasks.destroy');
+});

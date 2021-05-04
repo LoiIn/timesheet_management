@@ -26,7 +26,7 @@ class TaskRequest extends FormRequest
     {
         return [
             'content'       => 'string|required',
-            'time_exist'      => 'double|required',
+            'end_date'      => 'required',
         ];
     }
 

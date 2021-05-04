@@ -6,30 +6,64 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use App\User;
-use App\Models\TimeSheet;
+use App\Models\TimesheetTask;
 use App\Models\Task;
 use App\Http\Requests\TaskRequest;
-use Carbon;
+use Carbon\Carbon;
 
 class TaskController extends Controller
 {
 
-    public function postTask(TaskRequest $request, $timesheet_id){
+    public function create(){
+        return view('timesheet.task_create');
+    }
+
+    public function store(TaskRequest $request, $ts_id){
         $request->all();
+
+        $this->insertOrUpdate($request, $ts_id);
+
+        return redirect()->route('timesheets.index');
+    }
+
+    public function edit($ts_id, $id){
+        $task = Task::find($id);
+        return view('timesheet.task_edit', compact('task'));
+    }
+
+    public function update(TaskRequest $request, $ts_id, $id){
+        $request->all();
+
+        $this->insertOrUpdate($request, $ts_id, $id);
+
+        return redirect()->route('timesheets.index');
+    }
+
+    public function destroy($ts_id, $id){ 
+        $task = Task::find($id);
+        $ts_task = TimesheetTask::where('task_id', $id)->delete();
+        $task->delete();
+        return redirect()->route('timesheets.index');
+    }
+
+    public function insertOrUpdate(TaskRequest $request, $ts_id, $task_id = ''){
         $task = new Task;
+        if($task_id) $task = Task::find($task_id);
         $task->content = $request->content;
-        $today = Carbon::now()->day;
-        $hours = $today->diffInHours($request->end_date);
-        $task->time_exist = $hours;
+        $_date = convertFormatDate($request->end_date);
+        $task->end_date = $_date;
+        $start_date = Carbon::now();
+        $end_date = Carbon::createFromFormat('Y-m-d', $_date);
+        $hours = $end_date->diffInHours($start_date, true);
+        $task->time_exist = $hours*1.0;
         $task->save();
 
-        $user_id = Auth::user()->id;
-        $ts_list = User::find($user_id)->timesheets;
-        $ts_task_list = [];
-        foreach($ts_list as $ts){
-            $ts_task_list[$ts->id] = TimeSheet::find($ts->id)->tasks;
+        if(!$task_id){
+            $ts_task = new TimesheetTask;
+            $ts_task->task_id = $task->id;
+            $ts_task->ts_id = (int)$ts_id;
+            $ts_task->save();
         }
-        return view('timesheet.index', ['timesheets'=> $ts_list, 'ts_tasks' => $ts_task_list]);
     }
 
 }

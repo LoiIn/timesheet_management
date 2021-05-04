@@ -3,7 +3,7 @@
       <tr>
         <th scope="col">Task ID</th>
         <th scope="col">Content</th>
-        <th scope="col">Time exist</th>
+        <th scope="col">Time exist (hours)</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
@@ -14,8 +14,13 @@
           <td>{{$task->content}}</td>
           <td>{{$task->time_exist}}</td>
           <td>
-              <button type="button" class="btn btn-warning">Edit</button>
-              <button type="button" class="btn btn-danger">Remove</button>
+              <a name="" id="" class="btn btn-outline-warning" href="{{route('tasks.edit', ['ts_id'=>$item->id, 'id'=>$task->id])}}" role="button">Edit</a>
+              {{-- <button type="button" class="btn btn-danger">Remove</button> --}}
+              <form action="{{route('tasks.destroy', ['ts_id'=>$item->id, 'id'=>$task->id])}}" method="post"  >
+                @csrf
+                @method('delete')
+                <button type="submit" class="btn btn-outline-danger">Delete</button>
+              </form>
           </td>
         </tr>
       @endforeach
