@@ -11,7 +11,7 @@
         <ul>
           <li class="active"><a href="{{route('home.index')}}">Home</a></li>
           <li><a href="{{route('timesheets.index')}}">Timesheet</a></li>          
-          <li><a href="#">Report</a></li>
+          <li><a href="{{route('reports.index')}}">Report</a></li>
           @if (empty($username))
             <li><a href="{{route('login.index')}}">SignIn</a></li>
           @else

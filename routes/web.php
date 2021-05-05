@@ -48,5 +48,10 @@ Route::prefix('/')->middleware('login')->group(function () {
         Route::post('/{ts_id}/tasks/{id}/edit', 'TaskController@update')->name('tasks.update');
         Route::delete('/{ts_id}/tasks/{id}/delete', 'TaskController@destroy')->name('tasks.destroy');
     });
+
+    Route::prefix('reports')->group(function () {
+        //report
+        Route::get('/', 'ReportController@index')->name('reports.index');
+    });
 });
  

@@ -12,6 +12,11 @@
                     <h2>TimeSheet Management</h2>
                 </div>
                 <div class="col-lg-6 text-right">
+                  @if(session('ts_action_fail'))
+                    <div class="alert alert-danger">
+                        {{session('ts_action_fail')}}
+                    </div>
+                  @endif 
                   <a name="" id="" class="btn btn-primary" href="{{route('timesheets.create')}}" role="button">Add TS</a>
                 </div>
             </div>

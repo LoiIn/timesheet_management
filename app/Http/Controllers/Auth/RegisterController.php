@@ -50,7 +50,6 @@ class RegisterController extends Controller
             $file->move(public_path().$avatar_path, $avatar_name);
             $user->avatar = $avatar_name;
         }
-        $user->role = Config::get('constants.ROLE_USER', '2');
         if($user->save()){
             return redirect('sign-in')->with('registerSuccess', 'Register successed, please login');
         }
