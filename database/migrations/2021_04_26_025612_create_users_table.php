@@ -21,7 +21,6 @@ class CreateUsersTable extends Migration
             $table->text('address')->nullable();
             $table->date('birthday')->nullable();
             $table->string('avatar', 511)->nullable();
-            $table->tinyInteger('role');
             $table->tinyInteger('is_active')->default(1);
             $table->rememberToken();
             $table->softDeletes();
