@@ -64,8 +64,8 @@ class TimesheetPolicy
      * @return mixed
      */
     public function delete(User $user, TimeSheet $timeSheet)
-    {
-        //
+    {   
+        return ($user->id === $timeSheet->user_id && $user->hasPermission('delete_timesheet'));
     }
 
     /**

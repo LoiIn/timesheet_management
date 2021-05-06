@@ -44,7 +44,7 @@ class TimesheetController extends Controller
         $month = $today->month;
         $report = Report::find($user_id);
 
-        if($report == null || $report->month === $month){
+        if($report === null || $report->month != $month){
             Report::create([
                 'month' => $month,
                 'user_id' => $user_id,
@@ -77,6 +77,18 @@ class TimesheetController extends Controller
         }else{
             return view('timesheet.timesheet_create')->with('ts_action_fail', 'Update timesheet fail!');
         }
+    }
+
+    public function destroy($id){
+        $ts = TimeSheet::find($id);
+        $can_action = $this->authorize('delete', $ts);
+        if($can_action){
+            $ts->delete();
+            return redirect()->route('timesheets.index');
+        }else{
+            return redirect()->route('timesheets.index')->with('ts_action_fail', 'You can not delete!');
+        }
+       
     }
 
     public function insertOrUpdate(TimesheetRequest $request, $id = ''){

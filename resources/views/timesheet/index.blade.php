@@ -45,6 +45,11 @@
                       <td>{{$item->plan}}</td>
                       <td>
                           <a class="btn btn-info" href="{{route('timesheets.edit', $item->id)}}" role="button">Edit</a>
+                          <form action="{{route('timesheets.destroy', $item->id)}}" method="post"  >
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn btn-outline-danger">Delete</button>
+                          </form>
                       </td>
                     </tr>
                   @endforeach
