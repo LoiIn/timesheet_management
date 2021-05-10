@@ -41,7 +41,7 @@ class TimesheetPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->hasPermission('create_timesheet');
     }
 
     /**
@@ -53,7 +53,7 @@ class TimesheetPolicy
      */
     public function update(User $user, TimeSheet $timeSheet)
     {
-        //
+        return ($user->id === $timeSheet->user_id || $user->hasPermission('update_timesheet'));
     }
 
     /**

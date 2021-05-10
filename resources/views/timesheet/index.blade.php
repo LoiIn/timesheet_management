@@ -20,6 +20,13 @@
                   <a name="" id="" class="btn btn-primary" href="{{route('timesheets.create')}}" role="button">Add TS</a>
                 </div>
             </div>
+            @if (Auth::user()->hasRole('admin'))
+              <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                    @include('timesheet.search_form')
+                </div>
+              </div>
+            @endif
             <table class="table mt-2 text-center">
                 <thead>
                   <tr>
@@ -45,11 +52,13 @@
                       <td>{{$item->plan}}</td>
                       <td>
                           <a class="btn btn-info" href="{{route('timesheets.edit', $item->id)}}" role="button">Edit</a>
-                          <form action="{{route('timesheets.destroy', $item->id)}}" method="post"  >
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-outline-danger">Delete</button>
-                          </form>
+                          @if(Auth::user()->hasPermission('delete_timesheet'))
+                            <form action="{{route('timesheets.destroy', $item->id)}}" method="post"  >
+                              @csrf
+                              @method('delete')
+                              <button type="submit" class="btn btn-outline-danger">Delete</button>
+                            </form>
+                          @endif
                       </td>
                     </tr>
                   @endforeach

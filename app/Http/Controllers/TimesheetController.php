@@ -27,7 +27,7 @@ class TimesheetController extends Controller
 
     public function create(){
         $user_id = Auth::user()->id;
-        $timesheets = Timesheet::where('user_id', $user_id)->whereRaw('Date(created_at) = CURDATE()')->get()->pluck('created_at');
+        $timesheets = TimeSheet::where('user_id', $user_id)->whereRaw('Date(created_at) = CURDATE()')->get()->pluck('created_at');
         if(count($timesheets) == 0){
             return view('timesheet.timesheet_create');
         }else{
@@ -99,6 +99,10 @@ class TimesheetController extends Controller
         $ts->plan = $request->plan;
         if(!$ts->save()) return false;
         return true;
+    }
+
+    public function show($member_id = ''){
+         dd('hihi');
     }
 
 }

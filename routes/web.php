@@ -40,6 +40,7 @@ Route::prefix('/')->middleware('login')->group(function () {
         Route::get('/{id}/edit', 'TimesheetController@edit')->name('timesheets.edit');
         Route::post('/{id}/edit', 'TimesheetController@update')->name('timesheets.update');
         Route::delete('/{id}/delete', 'TimesheetController@destroy')->name('timesheets.destroy');
+        Route::get('/admin/members/{member_id}/show', 'TimesheetController@show')->name('timesheets.admin_show');
 
         // task
         Route::get('/{ts_id}/tasks/create', 'TaskController@create')->name('tasks.create');
@@ -52,6 +53,8 @@ Route::prefix('/')->middleware('login')->group(function () {
     Route::prefix('reports')->group(function () {
         //report
         Route::get('/', 'ReportController@index')->name('reports.index');
+        Route::get('/admin/members/{member_id}/profiles', 'UserController@show')->name('members.index');
+        Route::delete('/admin/members/{member_id}/delete', 'UserController@destroy')->name('members.destroy');
     });
 });
  

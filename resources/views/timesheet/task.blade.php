@@ -3,7 +3,7 @@
       <tr>
         <th scope="col">Task ID</th>
         <th scope="col">Content</th>
-        <th scope="col">Time exist (hours)</th>
+        <th scope="col">End-date</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
@@ -12,7 +12,7 @@
         <tr>
           <th scope="row">{{$task->id}}</th>
           <td>{{$task->content}}</td>
-          <td>{{$task->time_exist}}</td>
+          <td>{{$task->end_date}}</td>
           <td>
               <a name="" id="" class="btn btn-outline-warning" href="{{route('tasks.edit', ['ts_id'=>$item->id, 'id'=>$task->id])}}" role="button">Edit</a>
               {{-- <button type="button" class="btn btn-danger">Remove</button> --}}

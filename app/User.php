@@ -8,10 +8,11 @@ use Illuminate\Notifications\Notifiable;
 // use App\Traits\HasPermissions;
 use App\Models\Permission;
 use App\Models\Role;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'username', 'email', 'password', 'address', 'birthday', 'avatar'
     ];
 
     /**
@@ -48,6 +49,15 @@ class User extends Authenticatable
 
     public function roles(){
         return $this->belongsToMany('App\Models\Role');
+    }
+
+    public function hasRole($role)
+    {
+        if (is_string($role)) {
+            return $this->roles->contains('name', $role);
+        }
+
+        return false;
     }
 
     public function hasPermission($permission = null)

@@ -184,11 +184,6 @@
         aos_init();
     });
 
-    $('#end_date').pickadate();
-
-    // $('.add-ts').click(function (e) { 
-    //     e.preventDefault();
-        
-    // });
+    $('.choose_date').pickadate();
 
 })(jQuery);

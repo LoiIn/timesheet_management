@@ -37,20 +37,9 @@ class RegisterController extends Controller
     public function postRegister(RegisterRequest $request){
         $request->all();
         
-        $user = new User;        
-        $user->username = $request->username;
-        $user->email    = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->address  = $request->address;
-        $user->birthday = convertFormatDate($request->birthday);
-        if($request->hasFile('avatar')){
-            $file = $request->avatar;
-            $avatar_path = '/uploads/avatar/';
-            $avatar_name = time().$request->username."-".$file->getClientOriginalName();
-            $file->move(public_path().$avatar_path, $avatar_name);
-            $user->avatar = $avatar_name;
-        }
-        if($user->save()){
+        $user = $this->create($request);
+        
+        if($user){
             return redirect('sign-in')->with('registerSuccess', 'Register successed, please login');
         }
         else{
@@ -89,12 +78,24 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
+    protected function create($data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+        $avatar_name = '';
+        if($data->hasFile('avatar')){
+            $file = $data->avatar;
+            $avatar_path = '/uploads/avatar/';
+            $avatar_name = time().$data->username."-".$file->getClientOriginalName();
+            $file->move(public_path().$avatar_path, $avatar_name);
+            $user->avatar = $avatar_name;
+        }
+        $user =  User::create([
+            'username' => $data->username,
+            'email'    => $data->email,
+            'password' => bcrypt($data->password),
+            'address'  => $data->address,
+            'birthday' => convertFormatDate($data->birthday),
+            'avatar'   => $avatar_name
         ]);
+        return $user;
     }
 }

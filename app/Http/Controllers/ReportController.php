@@ -16,21 +16,7 @@ class ReportController extends Controller
 {   
 
     public function index(){
-        $reports = Report::all();
-        $users = User::all();
-        $rs =[];
-        $count = 0;
-        foreach($users as $user){
-            $report = Report::find($user->id);
-            $item = [
-                'stt' => $user->id,
-                'month' => $report == null ? Carbon::now()->month : $report->month,
-                'username' => $user->username,
-                'regris_time' => $report == null ? 0 : $report->registrations_times,
-                'regris_late_time' => $report == null ? 0: $report->registrations_late_times
-            ];
-            $rs[] = $item;
-        }
+        $rs = $this->getReport();
         return view('report.index', ['reports'=>$rs]);
     }
 
@@ -51,6 +37,36 @@ class ReportController extends Controller
 
     public function insertOrUpdate(TimesheetRequest $request, $id = ''){
         
+    }
+
+    public function getReport(){
+        $rs =[];
+        if(Auth::user()->roles->contains('name','admin')){
+            $reports = Report::all();
+            $users = User::all();
+            $count = 0;
+            foreach($users as $user){
+                $item = $this->getReportOneUser($user);
+                $rs[] = $item;
+            }
+        }else{
+            $rs[] = $this->getReportOneUser(Auth::user());
+        }
+        return $rs;
+    }
+
+    public function getReportOneUser($user){
+        $report = Report::find($user->id);
+        $roles_str = convertRolesArrayToString($user->roles);
+        $item = [
+            'stt' => $user->id,
+            'month' => $report == null ? Carbon::now()->month : $report->month,
+            'username' => $user->username,
+            'roles'  => $roles_str,
+            'regris_time' => $report == null ? 0 : $report->registrations_times,
+            'regris_late_time' => $report == null ? 0: $report->registrations_late_times
+        ];
+        return $item;
     }
 
 }
