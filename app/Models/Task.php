@@ -11,8 +11,7 @@ class Task extends Model
     protected $table = "tasks";
 
     protected $fillable = [
-        'content',
-        'time_exist'
+        'content','end_date'
     ];
 
     public function timesheets(){

@@ -17,6 +17,13 @@ class PermissionSeeder extends Seeder
             ['name' => 'delete_timesheet', 'title' => 'can delete timesheet'],
             ['name' => 'restore_timesheet', 'title' => 'can restore timesheet'],
             ['name' => 'force_delete_timesheet', 'title' => 'can force delete timesheet'],
+            ['name' => 'create_task', 'title' => 'can create task'],
+            ['name' => 'update_task',  'title' => 'can update task'],
+            ['name' => 'delete_task', 'title' => 'can delete task'],
+            ['name' => 'restore_task', 'title' => 'can restore task'],
+            ['name' => 'force_delete_task', 'title' => 'can force delete task'],
+            ['name' => 'delete_user', 'title' => 'can delete user'],
+            ['name' => 'update_user', 'title' => 'can update infor user'],
         ]);
     }
 }
