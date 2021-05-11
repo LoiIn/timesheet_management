@@ -61,6 +61,44 @@
   <!-- Template Main JS File -->
   <script src="{{asset('assets/js/main.js')}}"></script>
 
+  <script>
+    //ajax search
+    $('.search-name').keyup(function(){
+      var query = $(this).val(); 
+      // if(query != '') {
+          var _token = $('input[name="_token"]').val(); 
+          $.ajax({
+            url:"{{route('search')}}", 
+            method:"POST", 
+            data:{query:query, _token:_token},
+            success:function(data){ 
+              $('.search-result').fadeIn(); 
+              $('.search-result').html(data);
+            }
+          });
+      // }
+    }); 
+
+    $('.search-select').change(function () { 
+      var query = $(this).val();
+          // type1 = $('.search-select option').eq(0).val();
+      var type = $(this).parent().attr('id') == 'search-role' ? 'role' : 'month';
+      if(query != '') {
+          var _token = $('input[name="_token"]').val(); 
+          $.ajax({
+          url:"{{route('search')}}", 
+          method:"POST", 
+          data:{query:query, type: type, _token:_token},
+          success:function(data){ 
+            $('.search-result').fadeIn(); 
+            $('.search-result').html(data);
+          }
+        });
+      }
+    });
+    $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+</script>
+
 </body>
 
 </html>

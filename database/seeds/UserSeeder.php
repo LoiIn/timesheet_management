@@ -54,6 +54,41 @@ class UserSeeder extends Seeder
                 'address' => 'Ho Tay',
                 'birthday' => '1999-05-08',
             ],
+            [
+                'username' => 'user6',
+                'email' => 'user6@gmail.com',
+                'password' => bcrypt('abc123'),
+                'address' => 'Ho Tay',
+                'birthday' => '1999-05-08',
+            ],
+            [
+                'username' => 'user7',
+                'email' => 'user7@gmail.com',
+                'password' => bcrypt('abc123'),
+                'address' => 'Ho Tay',
+                'birthday' => '1999-05-08',
+            ],
+            [
+                'username' => 'user8',
+                'email' => 'user8@gmail.com',
+                'password' => bcrypt('abc123'),
+                'address' => 'Ho Tay',
+                'birthday' => '1999-05-08',
+            ],
+            [
+                'username' => 'user9',
+                'email' => 'user9@gmail.com',
+                'password' => bcrypt('abc123'),
+                'address' => 'Ho Tay',
+                'birthday' => '1999-05-08',
+            ],
+            [
+                'username' => 'user10',
+                'email' => 'user10@gmail.com',
+                'password' => bcrypt('abc123'),
+                'address' => 'Ho Tay',
+                'birthday' => '1999-05-08',
+            ],
         ]);
     }
 }

@@ -184,6 +184,7 @@
         aos_init();
     });
 
+    //datepicker
     $('.choose_date').pickadate();
 
 })(jQuery);
