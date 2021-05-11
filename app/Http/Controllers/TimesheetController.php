@@ -16,38 +16,42 @@ class TimesheetController extends Controller
 {
 
     public function index(){
-        $user_id = Auth::user()->id;
-        $ts_list = User::find($user_id)->timesheets;
-        $ts_task_list = [];
-        foreach($ts_list as $ts){
-            $ts_task_list[$ts->id] = TimeSheet::find($ts->id)->tasks;
+        $userId = Auth::user()->id;
+        $timesheetList = User::find($userId)->timesheets;
+        $tsTaskList = [];
+        foreach($timesheetList as $ts){
+            $tsTaskList[$ts->id] = TimeSheet::find($ts->id)->tasks;
         }
-        return view('timesheet.index', ['timesheets'=> $ts_list, 'ts_tasks' => $ts_task_list]);
+        return view('timesheet.index', ['timesheets'=> $timesheetList, 'ts_tasks' => $tsTaskList]);
     }
 
     public function create(){
-        $user_id = Auth::user()->id;
-        $timesheets = TimeSheet::where('user_id', $user_id)->whereRaw('Date(created_at) = CURDATE()')->get()->pluck('created_at');
-        if(count($timesheets) == 0){
-            return view('timesheet.timesheet_create');
+        if(Auth::user()->hasRole('admin')){
+            return view('timesheet.timesheet-create');
         }else{
-            return redirect()->route('timesheets.index')->with('ts_action_fail', 'Can only create up to one timesheet per day!');
+            $userId = Auth::user()->id;
+            $timesheets = TimeSheet::where('user_id', $userId)->whereRaw('Date(created_at) = CURDATE()')->get()->pluck('created_at');
+            if(count($timesheets) == 0){
+                return view('timesheet.timesheet-create');
+            }else{
+                return redirect()->route('timesheets.index')->with('ts_action_fail', 'Can only create up to one timesheet per day!');
+            }
         }
     }
 
     public function store(TimesheetRequest $request){
         $request->all();
 
-        $user_id = Auth::user()->id;
+        $userId = Auth::user()->id;
         $today = Carbon::now('Asia/Ho_Chi_Minh');
         $hour = $today->hour;
         $month = $today->month;
-        $report = Report::find($user_id);
+        $report = Report::find($userId);
 
         if($report === null || $report->month != $month){
             Report::create([
                 'month' => $month,
-                'user_id' => $user_id,
+                'user_id' => $userId,
                 'registrations_times' => 1,
                 'registrations_late_times' => $hour <= 9 ? 0 : 1, 
             ]);
@@ -57,48 +61,48 @@ class TimesheetController extends Controller
             $report->save();
         }
 
-        if($this->insertOrUpdate($request)){
+        $ts = TimeSheet::create([
+            'user_id'  => $userId,
+            'problems' => $request->problems,
+            'plan'     => $request->plan,
+        ]);
+
+        if($ts){
             return redirect()->route('timesheets.index')->with('ts_action_success', 'A new timesheet was added!');
         }else{
-            return view('timesheet.timesheet_create')->with('ts_action_fail', 'Add new timesheet failed!');
+            return view('timesheet.timesheet-create')->with('ts_action_fail', 'Add new timesheet failed!');
         }
     }
 
     public function edit($id){
         $timesheet = TimeSheet::find($id);
-        return view('timesheet.timesheet_edit', compact('timesheet'));
+        return view('timesheet.timesheet-edit', compact('timesheet'));
     }
 
     public function update(TimesheetRequest $request, $id){
         $request->all();
 
-        if($this->insertOrUpdate($request, $id)){
+        $ts = TimeSheet::find($id);
+        $ts->problems = $request->problems;
+        $ts->plan = $request->plan;
+
+        if($ts->save()){
             return redirect()->route('timesheets.index')->with('ts_action_success', 'The timesheet was updated!');
         }else{
-            return view('timesheet.timesheet_create')->with('ts_action_fail', 'Update timesheet fail!');
+            return view('timesheet.timesheet-create')->with('ts_action_fail', 'Update timesheet fail!');
         }
     }
 
     public function destroy($id){
         $ts = TimeSheet::find($id);
-        $can_action = $this->authorize('delete', $ts);
-        if($can_action){
+        $canAction = $this->authorize('delete', $ts);
+        if($canAction){
             $ts->delete();
             return redirect()->route('timesheets.index');
         }else{
             return redirect()->route('timesheets.index')->with('ts_action_fail', 'You can not delete!');
         }
        
-    }
-
-    public function insertOrUpdate(TimesheetRequest $request, $id = ''){
-        $ts = new TimeSheet;
-        if($id) $ts = TimeSheet::find($id);
-        $ts->user_id = Auth::user()->id;
-        $ts->problems = $request->problems;
-        $ts->plan = $request->plan;
-        if(!$ts->save()) return false;
-        return true;
     }
 
     public function show($member_id = ''){

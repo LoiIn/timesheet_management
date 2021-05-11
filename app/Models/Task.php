@@ -15,6 +15,6 @@ class Task extends Model
     ];
 
     public function timesheets(){
-        return $this->belongsToMany('App\Models\Timesheet');
+        return $this->belongsToMany('App\Models\TimeSheet', 'ts_task', 'task_id', 'ts_id');
     }
 }

@@ -36,9 +36,9 @@
                                 <span>{{$member->birthday}}</span>
                             </li>
                         </ul>
-                        @if(session('user_action_fail'))
+                        @if(session('user-action-fail'))
                             <div class="alert alert-danger">
-                                {{session('user_action_fail')}}
+                                {{session('user-action-fail')}}
                             </div>
                         @endif 
                         <form action="{{route('members.destroy', $member->id)}}" method="post"  >

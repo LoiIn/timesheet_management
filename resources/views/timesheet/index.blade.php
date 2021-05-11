@@ -23,7 +23,7 @@
             @if (Auth::user()->hasRole('admin'))
               <div class="row">
                 <div class="col-lg-6 offset-lg-3">
-                    @include('timesheet.search_form')
+                    @include('timesheet.search-form')
                 </div>
               </div>
             @endif

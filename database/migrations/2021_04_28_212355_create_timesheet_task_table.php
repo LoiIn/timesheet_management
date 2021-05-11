@@ -17,8 +17,6 @@ class CreateTimesheetTaskTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('ts_id')->unsigned();
             $table->bigInteger('task_id')->unsigned();
-            $table->softDeletes();
-            $table->timestamps();
         });
     }
 

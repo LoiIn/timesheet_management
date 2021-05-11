@@ -11,6 +11,7 @@ class TimeSheet extends Model
     protected $table = "timesheets";
 
     protected $fillable = [
+        'user_id',
         'problems',
         'plan'
     ];

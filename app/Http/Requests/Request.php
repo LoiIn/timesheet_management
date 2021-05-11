@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 
-class TimesheetRequest extends Request
+class Request extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +13,7 @@ class TimesheetRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -25,9 +24,7 @@ class TimesheetRequest extends Request
     public function rules()
     {
         return [
-            'problems'       => 'string|required',
-            'plan'           => 'string|required',
+            //
         ];
     }
-
 }

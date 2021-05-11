@@ -57,12 +57,12 @@ class ReportController extends Controller
 
     public function getReportOneUser($user){
         $report = Report::find($user->id);
-        $roles_str = convertRolesArrayToString($user->roles);
+        $rolesStr = convertRolesArrayToString($user->roles);
         $item = [
             'stt' => $user->id,
             'month' => $report == null ? Carbon::now()->month : $report->month,
             'username' => $user->username,
-            'roles'  => $roles_str,
+            'roles'  => $rolesStr,
             'regris_time' => $report == null ? 0 : $report->registrations_times,
             'regris_late_time' => $report == null ? 0: $report->registrations_late_times
         ];

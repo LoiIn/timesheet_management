@@ -34,30 +34,30 @@ class UserController extends Controller
 
         if($request->hasFile('re_avatar')){
             $file = $request->re_avatar;
-            $avatar_path = '/uploads/avatar/';
-            $avatar_name = time().$request->username."-".$file->getClientOriginalName();
-            $file->move(public_path().$avatar_path, $avatar_name);
-            $user->avatar = $avatar_name;
+            $avatarPath = '/uploads/avatar/';
+            $avatarName = time().$request->username."-".$file->getClientOriginalName();
+            $file->move(public_path().$avatarPath, $avatarName);
+            $user->avatar = $avatarName;
         }
 
         $user->save();
 
-        return redirect('user-profiles')->with('mes1', 'Your profiles have been updated!');
+        return redirect('user-profiles')->with('user-action-success', 'Your profiles have been updated!');
     }
 
-    public function show($member_id){
-        $member = Auth::user()->find((int)$member_id);
+    public function show($memberId){
+        $member = Auth::user()->find((int)$memberId);
         return view('user.member', ['member'=>$member]);
     }
 
-    public function destroy($member_id){
-        $member = Auth::user()->find($member_id);
-        if($member_id == 1){
-            return view('user.member', ['member'=>$member])->with('user_action_fail', 'You must make other come admin role!');
+    public function destroy($memberId){
+        $member = Auth::user()->find($memberId);
+        if($memberId == 1){
+            return view('user.member', ['member'=>$member])->with('user-action-fail', 'You must make other come admin role!');
         }else{
-            $ts = TimeSheet::where('user_id', $member_id)->get(); 
+            $ts = TimeSheet::where('user_id', $memberId)->get(); 
             if(count($ts) != 0) $this->destroyArr($ts);
-            $rp = Report::where('user_id', $member_id)->get();
+            $rp = Report::where('user_id', $memberId)->get();
             if(count($rp) != 0) $this->destroyArr($rp);
             $member->is_active = 2;
             $member->save();
@@ -72,7 +72,7 @@ class UserController extends Controller
         }
     }
 
-    public function updateRole($member_id){
+    public function updateRole($memberId){
         
     }
 

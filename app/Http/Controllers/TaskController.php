@@ -16,61 +16,49 @@ class TaskController extends Controller
 {
 
     public function create(){
-        return view('timesheet.task_create');
+        return view('timesheet.task-create');
     }
 
-    public function store(TaskRequest $request, $ts_id){
+    public function store(TaskRequest $request, $timesheetId){
         $request->all();
 
-        if($this->insertOrUpdate($request, $ts_id)){
+        $task = Task::create([
+            'content'  => $request->content,
+            'end_date' => convertFormatDate($request->end_date)
+        ]);
+        
+        if($task){
+            $task->timesheets()->attach($timesheetId);
             return redirect()->route('timesheets.index')->with('task_action_success', 'A new task was added');
         }else{
-            return view('timesheet.task_create')->with('task_action_fail', 'Add new task failed');
+            return view('timesheet.task-create')->with('task_action_fail', 'Add new task failed');
         }
     }
 
-    public function edit($ts_id, $id){
+    public function edit($timesheetId, $id){
         $task = Task::find($id);
-        return view('timesheet.task_edit', compact('task'));
+        return view('timesheet.task-edit', compact('task'));
     }
 
-    public function update(TaskRequest $request, $ts_id, $id){
+    public function update(TaskRequest $request, $timesheetId, $id){
         $request->all();
+        
+        $task = Task::find($id);
+        $task->content = $request->content;
+        $task->end_date = $request->end_date;
 
-        if($this->insertOrUpdate($request, $ts_id, $id)){
+        if($task->save()){
             return redirect()->route('timesheets.index')->with('task_action_success', 'The task was updated');
         }else{
-            return view('timesheet.task_create')->with('task_action_fail', 'Update task failed');
+            return view('timesheet.task-create')->with('task_action_fail', 'Update task failed');
         }
     }
 
-    public function destroy($ts_id, $id){ 
+    public function destroy($timesheetId, $id){ 
         $task = Task::find($id);
-        $ts_task = TimesheetTask::where('task_id', $id)->delete();
+        $task->timesheets()->detach((int)$timesheetId); 
         $task->delete();
         return redirect()->route('timesheets.index');
     }
 
-    public function insertOrUpdate(TaskRequest $request, $ts_id, $task_id = ''){
-        $task = new Task;
-        if($task_id) $task = Task::find($task_id);
-        $task->content = $request->content;
-        $_date = convertFormatDate($request->end_date);
-        $task->end_date = $_date;
-        $start_date = Carbon::now();
-        $end_date = Carbon::createFromFormat('Y-m-d', $_date);
-        $hours = $end_date->diffInHours($start_date, true);
-        $task->time_exist = $hours*1.0;
-        if(!$task->save()){
-           return false; 
-        }
-
-        if(!$task_id){
-            $ts_task = new TimesheetTask;
-            $ts_task->task_id = $task->id;
-            $ts_task->ts_id = (int)$ts_id;
-            if(!$ts_task->save()) return false;
-        }
-        return true;
-    }
 }

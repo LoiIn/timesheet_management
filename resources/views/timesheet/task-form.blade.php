@@ -22,7 +22,7 @@
     </div>
     <div class="form-group">
         <label for="end_date"><i class="col-form-label"></i></label>
-        <input type="text" class="form-control" name="end_date" id="end_date" placeholder="Choose end date of task" value="{{old('end_date', isset($task->end_date) ? $task->end_date : '')}}">
+        <input type="text" class="form-control choose_date" name="end_date" id="end_date" placeholder="Choose end date of task" value="{{old('end_date', isset($task->end_date) ? $task->end_date : '')}}">
     </div>
     <div class="form-group text-center">
         <a class="btn btn-primary" href="{{route('timesheets.index')}}" role="button">Cancle</a>
