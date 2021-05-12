@@ -3,10 +3,10 @@
         <form action="" > 
             @csrf
             <div class="row">
-              <div class="col-6 form-group">
-                <input type="text" class="form-control search-name" placeholder="Username">
+              <div class="col-5 form-group">
+                <input type="text" class="form-control" id="search-username" placeholder="Username">
               </div>
-              <div class="col-4 form-group" id="search-role">
+              <div class="col-3 form-group" id="search-role">
                 <select class="form-control search-select">
                     <option>roles</option>
                     <option>admin</option>
@@ -30,6 +30,9 @@
                     <option>11</option>
                     <option>12</option>
                 </select>
+              </div>  
+              <div class="col-2 form-group">
+                <a name="" id="search-btn" class="btn btn-outline-success" href="#" role="button">Search</a>
               </div>  
             </div>
         </form>

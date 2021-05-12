@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-lg-12">
         <table class="table table-bordered">
-            <thead>
+            <thead class="text-center">
                 <tr>
                 @if (Auth::user()->hasRole('admin'))
                 <th scope="col">STT</th>
@@ -16,7 +16,7 @@
                 @endif
                 </tr>
             </thead>
-            <tbody class="search-result">
+            <tbody id="search-report-result">
                 @foreach ($reports as $report)
                     <tr>
                         @if (Auth::user()->hasRole('admin'))
@@ -72,6 +72,8 @@
                                     <div class="col-lg-12 text-center">
                                         <a name="" id="" class="btn btn-outline-danger" href="#" role="button" data-toggle="modal" data-target="#report-form-edit">Edit Roles</a>
                                         <a name="" id="" class="btn btn-success" href="{{route('members.index', ['member_id' => $report['stt']])}}" role="button">Profiles</a>
+                                        {{-- <a name="" id="export-btn" class="btn btn-outline-primary" href="#" role="button" data-href="{{url()->current()}}/admin/export">Export</a> --}}
+                                        <a class="btn btn-outline-primary" href="{{ route('export', ['member_id' => $report['stt']]) }}">Export</a>
                                     </div>
                                 </div>
                             </td>

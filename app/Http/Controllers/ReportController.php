@@ -11,6 +11,8 @@ use App\Models\TimeSheet;
 use App\Models\Report;
 use App\Http\Requests\TimesheetRequest;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ReportExport;
 
 class ReportController extends Controller
 {   
@@ -67,6 +69,10 @@ class ReportController extends Controller
             'regris_late_time' => $report == null ? 0: $report->registrations_late_times
         ];
         return $item;
+    }
+
+    public function export($member_id){
+        return Excel::download(new ReportExport($member_id), 'timesheet.xlsx');
     }
 
 }

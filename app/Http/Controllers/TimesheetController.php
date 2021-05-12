@@ -105,8 +105,15 @@ class TimesheetController extends Controller
        
     }
 
-    public function show($member_id = ''){
-         dd('hihi');
+    public function getAll(){
+        $userId = Auth::user()->id;
+        $timesheetList = User::find($userId)->timesheets;
+        $tsTaskList = [];
+        foreach($timesheetList as $ts){
+            $tsTaskList[$ts->id] = TimeSheet::find($ts->id)->tasks;
+        }
+        $output = view('timesheet.admin-index', ['timesheets'=> $timesheetList, 'ts_tasks' => $tsTaskList])->render();
+        return $output;
     }
 
 }

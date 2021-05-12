@@ -47,6 +47,9 @@ Route::prefix('/')->middleware('login')->group(function () {
         Route::get('/{ts_id}/tasks/{id}/edit', 'TaskController@edit')->name('tasks.edit');
         Route::post('/{ts_id}/tasks/{id}/edit', 'TaskController@update')->name('tasks.update');
         Route::delete('/{ts_id}/tasks/{id}/delete', 'TaskController@destroy')->name('tasks.destroy');
+
+        //admin
+        Route::get('/admin/all', 'TimesheetController@getAll')->name('timesheets.admin-index');
     });
 
     Route::prefix('reports')->group(function () {
@@ -56,7 +59,11 @@ Route::prefix('/')->middleware('login')->group(function () {
         Route::delete('/admin/members/{member_id}/delete', 'UserController@destroy')->name('members.destroy');
         
         //search
-        Route::post('/search', 'SearchController@getSearch')->name('search');
+        Route::post('/admin/search', 'SearchController@getSearchForReport')->name('search');
+
+        //export
+        // Route::get('/admin/export', 'ExportController@exportCsv')->name('export');
+        Route::get('/export/{member_id}', 'ReportController@export')->name('export');
     });
 });
  

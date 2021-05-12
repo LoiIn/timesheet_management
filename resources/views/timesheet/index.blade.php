@@ -9,7 +9,7 @@
         <div class="container-fluid mt-5">
             <div class="row">
                 <div class="col-lg-6">
-                    <h2>TimeSheet Management</h2>
+                  <h2>TimeSheet Management</h2>                    
                 </div>
                 <div class="col-lg-6 text-right">
                   @if(session('ts_action_fail'))
@@ -17,7 +17,11 @@
                         {{session('ts_action_fail')}}
                     </div>
                   @endif 
-                  <a name="" id="" class="btn btn-primary" href="{{route('timesheets.create')}}" role="button">Add TS</a>
+                  <a name="" id="" class="btn btn-outline-primary" href="{{route('timesheets.create')}}" role="button">Add TS</a>
+                  @if (Auth::user()->hasRole('admin'))
+                      <a name="" id="ts-me" class="btn btn-secondary" href="#" role="button">Me</a>
+                      <a name="" id="ts-all-btn" class="btn btn-outline-success" href="#" role="button">All</a>
+                  @endif
                 </div>
             </div>
             @if (Auth::user()->hasRole('admin'))
@@ -27,7 +31,7 @@
                 </div>
               </div>
             @endif
-            <table class="table table-bordered mt-2 text-center">
+            <table class="table table-bordered mt-2 text-center" id="ts-all">
                 <thead>
                   <tr>
                     <th scope="col" rowspan="2">Date</th>
