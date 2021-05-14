@@ -31,17 +31,4 @@ class RegisterRequest extends Request
             're_password'   => 'string|required|same:password'
         ];
     }
-
-    // public function messages()
-    // {
-    //     return [
-    //         'username.unique'=>'The Username already exists',
-    //         'username.max'   =>'Username must be less than 32 characters',
-    //         'username.min'   =>'Username must be more than 5 characters',
-    //         'password.max'   =>'Username must be less than 16 characters',
-    //         'password.min'   =>'Username must be more than 3 characters',
-    //         'email.unique'   =>'The Email already exists',
-    //         're_password'    =>'The re_password is incorrect'
-    //     ];
-    // }
 }

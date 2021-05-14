@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SearchRequest;
+use App\Http\Requests\Request;
 use App\User;
 use App\Models\Report;
 use Carbon\Carbon;
 
 class SearchController extends Controller
 {
-    function getSearchForReport(SearchRequest $request)
+    function getSearchForReport(Request $request)
     {   
         if($request->get('querys'))
         {

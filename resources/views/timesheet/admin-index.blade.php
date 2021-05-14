@@ -15,15 +15,15 @@
   <tbody>
     @foreach ($timesheets as $item)
       <tr>
-        <td rowspan="{{count($ts_tasks[$item->id]) + 1}}">{{$item->created_at}}</td>
+        <td rowspan="{{count($ts-tasks[$item->id]) + 1}}">{{$item->created_at}}</td>
         <td colspan="3">
           <a name="" id="" class="btn btn-primary" href="{{route('tasks.create', $item->id)}}" role="button">Add Task</a>
         </td>
-        <td rowspan="{{count($ts_tasks[$item->id]) + 1}}">{{$item->problems}}</td>
-        <td rowspan="{{count($ts_tasks[$item->id]) + 1}}">{{$item->plan}}</td>
-        <td rowspan="{{count($ts_tasks[$item->id]) + 1}}">
+        <td rowspan="{{count($ts-tasks[$item->id]) + 1}}">{{$item->problems}}</td>
+        <td rowspan="{{count($ts-tasks[$item->id]) + 1}}">{{$item->plan}}</td>
+        <td rowspan="{{count($ts-tasks[$item->id]) + 1}}">
           <a class="btn btn-outline-warning" href="{{route('timesheets.edit', $item->id)}}" role="button">Edit</a>
-          @if(Auth::user()->hasPermission('delete_timesheet'))
+          @if(Auth::user()->hasRole('admin'))
             <form action="{{route('timesheets.destroy', $item->id)}}" method="post"  >
               @csrf
               @method('delete')
@@ -32,7 +32,7 @@
           @endif
         </td>
       </tr>
-      @foreach ($ts_tasks[$item->id] as $task)
+      @foreach ($ts-tasks[$item->id] as $task)
         <tr>
           <td>{{$task->content}}</td>
           <td>{{$task->end_date}}</td>

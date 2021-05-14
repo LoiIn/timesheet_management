@@ -29,9 +29,9 @@ class TaskController extends Controller
         
         if($task){
             $task->timesheets()->attach($timesheetId);
-            return redirect()->route('timesheets.index')->with('task_action_success', 'A new task was added');
+            return redirect()->route('timesheets.index')->with('task-action-success', 'A new task was added');
         }else{
-            return view('timesheet.task-create')->with('task_action_fail', 'Add new task failed');
+            return view('timesheet.task-create')->with('task-action-fail', 'Add new task failed');
         }
     }
 
@@ -48,9 +48,9 @@ class TaskController extends Controller
         $task->end_date = $request->end_date;
 
         if($task->save()){
-            return redirect()->route('timesheets.index')->with('task_action_success', 'The task was updated');
+            return redirect()->route('timesheets.index')->with('task-action-success', 'The task was updated');
         }else{
-            return view('timesheet.task-create')->with('task_action_fail', 'Update task failed');
+            return view('timesheet.task-create')->with('task-action-fail', 'Update task failed');
         }
     }
 

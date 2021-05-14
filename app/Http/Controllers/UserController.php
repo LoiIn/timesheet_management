@@ -71,9 +71,4 @@ class UserController extends Controller
             $item->delete();
         }
     }
-
-    public function updateRole($memberId){
-        
-    }
-
 }

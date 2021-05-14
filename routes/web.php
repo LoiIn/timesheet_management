@@ -49,7 +49,7 @@ Route::prefix('/')->middleware('login')->group(function () {
         Route::delete('/{ts_id}/tasks/{id}/delete', 'TaskController@destroy')->name('tasks.destroy');
 
         //admin
-        Route::get('/admin/all', 'TimesheetController@getAll')->name('timesheets.admin-index');
+        Route::get('/admin/all', 'TimesheetController@getAll')->name('timesheets.admin_index');
     });
 
     Route::prefix('reports')->group(function () {

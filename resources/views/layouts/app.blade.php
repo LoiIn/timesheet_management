@@ -84,7 +84,7 @@
     $('#ts-all-btn').click(function (e) { 
       e.preventDefault();
       $.ajax({
-        url:"{{route('timesheets.admin-index')}}", 
+        url:"{{route('timesheets.admin_index')}}", 
         method:"GET", 
         success:function(data){ 
           $('#ts-all').fadeIn(); 

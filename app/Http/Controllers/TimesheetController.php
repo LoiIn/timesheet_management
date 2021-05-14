@@ -22,7 +22,7 @@ class TimesheetController extends Controller
         foreach($timesheetList as $ts){
             $tsTaskList[$ts->id] = TimeSheet::find($ts->id)->tasks;
         }
-        return view('timesheet.index', ['timesheets'=> $timesheetList, 'ts_tasks' => $tsTaskList]);
+        return view('timesheet.index', ['timesheets'=> $timesheetList, 'ts-tasks' => $tsTaskList]);
     }
 
     public function create(){
@@ -34,7 +34,7 @@ class TimesheetController extends Controller
             if(count($timesheets) == 0){
                 return view('timesheet.timesheet-create');
             }else{
-                return redirect()->route('timesheets.index')->with('ts_action_fail', 'Can only create up to one timesheet per day!');
+                return redirect()->route('timesheets.index')->with('ts-action-fail', 'Can only create up to one timesheet per day!');
             }
         }
     }
@@ -68,9 +68,9 @@ class TimesheetController extends Controller
         ]);
 
         if($ts){
-            return redirect()->route('timesheets.index')->with('ts_action_success', 'A new timesheet was added!');
+            return redirect()->route('timesheets.index')->with('ts-action-success', 'A new timesheet was added!');
         }else{
-            return view('timesheet.timesheet-create')->with('ts_action_fail', 'Add new timesheet failed!');
+            return view('timesheet.timesheet-create')->with('ts-action-fail', 'Add new timesheet failed!');
         }
     }
 
@@ -87,9 +87,9 @@ class TimesheetController extends Controller
         $ts->plan = $request->plan;
 
         if($ts->save()){
-            return redirect()->route('timesheets.index')->with('ts_action_success', 'The timesheet was updated!');
+            return redirect()->route('timesheets.index')->with('ts-action-success', 'The timesheet was updated!');
         }else{
-            return view('timesheet.timesheet-create')->with('ts_action_fail', 'Update timesheet fail!');
+            return view('timesheet.timesheet-create')->with('ts-action-fail', 'Update timesheet fail!');
         }
     }
 
@@ -100,7 +100,7 @@ class TimesheetController extends Controller
             $ts->delete();
             return redirect()->route('timesheets.index');
         }else{
-            return redirect()->route('timesheets.index')->with('ts_action_fail', 'You can not delete!');
+            return redirect()->route('timesheets.index')->with('ts-action-fail', 'You can not delete!');
         }
        
     }
@@ -112,7 +112,7 @@ class TimesheetController extends Controller
         foreach($timesheetList as $ts){
             $tsTaskList[$ts->id] = TimeSheet::find($ts->id)->tasks;
         }
-        $output = view('timesheet.admin-index', ['timesheets'=> $timesheetList, 'ts_tasks' => $tsTaskList])->render();
+        $output = view('timesheet.admin-index', ['timesheets'=> $timesheetList, 'ts-tasks' => $tsTaskList])->render();
         return $output;
     }
 

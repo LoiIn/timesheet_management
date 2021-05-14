@@ -41,7 +41,7 @@ class TimesheetPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermission('create_timesheet');
+        return $user->hasRole('admin');
     }
 
     /**
@@ -53,7 +53,7 @@ class TimesheetPolicy
      */
     public function update(User $user, TimeSheet $timeSheet)
     {
-        return ($user->id === $timeSheet->user_id || $user->hasPermission('update_timesheet'));
+        return ($user->id === $timeSheet->user_id || $user->hasRole('admin'));
     }
 
     /**
@@ -65,7 +65,7 @@ class TimesheetPolicy
      */
     public function delete(User $user, TimeSheet $timeSheet)
     {   
-        return ($user->id === $timeSheet->user_id && $user->hasPermission('delete_timesheet'));
+        return ($user->id === $timeSheet->user_id && $user->hasRole('admin'));
     }
 
     /**

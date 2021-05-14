@@ -7,9 +7,9 @@
             @endforeach
         </div>
     @endif
-    @if(session('task_action_fail'))
+    @if(session('task-action-fail'))
         <div class="alert alert-danger">
-            {{session('task_action_fail')}}
+            {{session('task-action-fail')}}
         </div>
     @endif 
     <div class="form-group">
