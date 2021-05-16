@@ -39,6 +39,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function teams(){
+        return $this->belongsToMany('App\Models\Team', 'team_user', 'user_id', 'team_id');
+    }
+
     public function timesheets(){
         return $this->hasMany('App\Models\TimeSheet');
     }
@@ -51,7 +55,15 @@ class User extends Authenticatable
         if (is_string($role)) {
             return $this->roles()->where('name', $role)->first();
         }
-
         return false;
+    }
+
+    public function getCurTeams($user_id){
+        $teams = $this->teams;
+        $teamArr = '';
+        foreach($teams as $team){
+            $teamArr = $teamArr.$team->name.', ';
+        }
+        return $teamArr;
     }
 }

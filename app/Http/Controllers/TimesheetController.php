@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Models\TimeSheet;
 use App\Models\Report;
+use App\Models\Team;
 use App\Http\Requests\TimesheetRequest;
 use Carbon\Carbon;
 
@@ -17,12 +18,37 @@ class TimesheetController extends Controller
 
     public function index(){
         $userId = Auth::user()->id;
-        $timesheetList = User::find($userId)->timesheets;
-        $tsTaskList = [];
-        foreach($timesheetList as $ts){
-            $tsTaskList[$ts->id] = TimeSheet::find($ts->id)->tasks;
+        $timesheets = User::find($userId)->timesheets;
+        
+        return view('timesheet.index', ['timesheets'=> $timesheets, 'tasks' => $this->getTasksOfTimesheets($timesheets)]);
+    }
+
+    public function manage(){
+        if(Auth::user()->hasRole('admin')){
+            return view('timesheet.manage', ['timesheets'=> TimeSheet::all()]);
+        }elseif (Auth::user()->hasRole('manager')){
+            return view('timesheet.manage', ['timesheets'=> $this->getTimesheetsByTeam(Auth::user()->id)]);
         }
-        return view('timesheet.index', ['timesheets'=> $timesheetList, 'ts-tasks' => $tsTaskList]);
+    }
+
+    public function getTimesheetsByTeam($leaderId){
+        $team = Team::where('leader_id', $leaderId)->get()->first();
+        $members = $team->users;
+        $timesheets = [];
+        foreach($members as $member){
+            foreach($member->timesheets as $timesheet){
+                $timesheets[] = $timesheet;
+            }
+        };
+        return $timesheets;
+    }
+
+    public function getTasksOfTimesheets($timesheets = null){
+        $timesheetTasks = [];
+        foreach($timesheets as $ts){
+            $timesheetTasks[$ts->id] = TimeSheet::find($ts->id)->tasks;
+        }
+        return $timesheetTasks;
     }
 
     public function create(){
@@ -98,22 +124,11 @@ class TimesheetController extends Controller
         $canAction = $this->authorize('delete', $ts);
         if($canAction){
             $ts->delete();
-            return redirect()->route('timesheets.index');
+            return redirect()->route('timesheets.manage');
         }else{
-            return redirect()->route('timesheets.index')->with('ts-action-fail', 'You can not delete!');
+            return redirect()->route('timesheets.manage')->with('ts-action-fail', 'You can not delete!');
         }
        
-    }
-
-    public function getAll(){
-        $userId = Auth::user()->id;
-        $timesheetList = User::find($userId)->timesheets;
-        $tsTaskList = [];
-        foreach($timesheetList as $ts){
-            $tsTaskList[$ts->id] = TimeSheet::find($ts->id)->tasks;
-        }
-        $output = view('timesheet.admin-index', ['timesheets'=> $timesheetList, 'ts-tasks' => $tsTaskList])->render();
-        return $output;
     }
 
 }

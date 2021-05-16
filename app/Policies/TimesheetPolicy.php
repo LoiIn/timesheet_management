@@ -41,7 +41,7 @@ class TimesheetPolicy
      */
     public function create(User $user)
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('manager');
     }
 
     /**
@@ -53,7 +53,7 @@ class TimesheetPolicy
      */
     public function update(User $user, TimeSheet $timeSheet)
     {
-        return ($user->id === $timeSheet->user_id || $user->hasRole('admin'));
+        return ($user->id === $timeSheet->user_id || $user->hasRole('manager'));
     }
 
     /**
@@ -65,7 +65,7 @@ class TimesheetPolicy
      */
     public function delete(User $user, TimeSheet $timeSheet)
     {   
-        return ($user->id === $timeSheet->user_id && $user->hasRole('admin'));
+        return $user->hasRole('manager');
     }
 
     /**

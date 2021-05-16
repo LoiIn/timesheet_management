@@ -5,6 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>TSMana - Home</title>
   <meta content="" name="description">
@@ -60,41 +61,12 @@
 
   <!-- Template Main JS File -->
   <script src="{{asset('assets/js/main.js')}}"></script>
-
+  @yield('script')
   <script>
-    $('#search-btn').click(function (e) { 
-      e.preventDefault();
-      var usernameQuery = $('#search-username').val(),
-          roleQuery     = $('#search-role select').find(":selected").val(),
-          monthQuery    = $('#search-month select').find(":selected").val(),
-          querys =[usernameQuery, roleQuery, monthQuery];
-      console.log(querys);
-      var _token = $('input[name="_token"]').val(); 
-      $.ajax({
-        url:"{{route('search')}}", 
-        method:"POST", 
-        data:{querys:querys, _token:_token},
-        success:function(data){ 
-          $('#search-report-result').fadeIn(); 
-          $('#search-report-result').html(data);
-        }
-      });
-    });
-
-    $('#ts-all-btn').click(function (e) { 
-      e.preventDefault();
-      $.ajax({
-        url:"{{route('timesheets.admin_index')}}", 
-        method:"GET", 
-        success:function(data){ 
-          $('#ts-all').fadeIn(); 
-          $('#ts-all').html(data);
-        }
-      });
-    });
+   
 
     $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
-</script>
+  </script>
 
 </body>
 

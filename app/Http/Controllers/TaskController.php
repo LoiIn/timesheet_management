@@ -6,7 +6,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use App\User;
-use App\Models\TimesheetTask;
+use App\Models\TimeSheet;
 use App\Models\Task;
 use App\Http\Requests\TaskRequest;
 use Carbon\Carbon;
@@ -14,6 +14,12 @@ use Config;
 
 class TaskController extends Controller
 {
+
+    public function index($timesheetId){
+        $tasks = TimeSheet::find($timesheetId)->tasks;
+        $output = view('timesheet.task', compact('tasks'))->render();
+        return $output;
+    }
 
     public function create(){
         return view('timesheet.task-create');

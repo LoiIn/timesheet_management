@@ -32,6 +32,8 @@ Route::prefix('/')->middleware('login')->group(function () {
     });
 
     //timesheet & task
+    Route::get('/manage-timesheets', 'TimesheetController@manage')->name('timesheets.manage');
+    Route::get('/manage-timesheets/search', 'SearchController@getSearchForTimesheet')->name('timesheets.search');
     Route::prefix('timesheets')->group(function () {
         //timesheet
         Route::get('/', 'TimesheetController@index')->name('timesheets.index');
@@ -42,6 +44,7 @@ Route::prefix('/')->middleware('login')->group(function () {
         Route::delete('/{id}/delete', 'TimesheetController@destroy')->name('timesheets.destroy');
 
         // task
+        Route::get('/{ts_id}/tasks', 'TaskController@index')->name('tasks.index');
         Route::get('/{ts_id}/tasks/create', 'TaskController@create')->name('tasks.create');
         Route::post('/{ts_id}/tasks/create', 'TaskController@store')->name('tasks.store');
         Route::get('/{ts_id}/tasks/{id}/edit', 'TaskController@edit')->name('tasks.edit');
@@ -59,7 +62,7 @@ Route::prefix('/')->middleware('login')->group(function () {
         Route::delete('/admin/members/{member_id}/delete', 'UserController@destroy')->name('members.destroy');
         
         //search
-        Route::post('/admin/search', 'SearchController@getSearchForReport')->name('search');
+        Route::post('/admin/search', 'SearchController@getSearchForReport')->name('reports.search');
 
         //export
         // Route::get('/admin/export', 'ExportController@exportCsv')->name('export');

@@ -1,15 +1,17 @@
 <form action="timesheets.admin_show" id="search-form"> 
     @csrf
-    @method('GET')
     <div class="row">
       <div class="col form-group">
-        <input type="text" class="form-control" placeholder="Username">
+        <input id="search-username" type="text" class="form-control" placeholder="Username">
       </div>
       <div class="col form-group">
-        <input type="text" class="form-control choose_date" name="" id ="" placeholder="Choose date" value="{{old('end_date', isset($task->end_date) ? $task->end_date : '')}}">
+        <input id="search-startDate" type="text" class="form-control choose-date" name="" id ="" placeholder="Choose startdate" value="">
+      </div>
+      <div class="col form-group">
+        <input id="search-endDate" type="text" class="form-control choose-date" name="" id ="" placeholder="Choose end date" value="">
       </div>
       <div class="col">
-        <button type="submit" class="btn btn-outline-primary" form="search-form">Search</button>
+        <a name="" id="search-timesheet-btn" class="btn btn-outline-primary" href="#" role="button">Search</a>
       </div>      
     </div>
 </form>

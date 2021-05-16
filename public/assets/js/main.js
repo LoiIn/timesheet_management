@@ -185,6 +185,6 @@
     });
 
     //datepicker
-    $('.choose_date').pickadate();
+    $('.choose-date').pickadate();
 
 })(jQuery);
