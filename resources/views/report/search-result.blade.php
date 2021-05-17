@@ -48,7 +48,7 @@
     <td>
         <div class="row">
             <div class="col-lg-12 text-center">
-                <a name="" id="" class="btn btn-outline-danger" href="#" role="button" data-toggle="modal" data-target="#report-form-edit">Edit Roles</a>
+                <a name="" id="" class="btn btn-outline-danger edit-role-btn" href="#" role="button" data-toggle="modal" data-target="#report-form-edit">Edit Roles</a>
                 <a name="" id="" class="btn btn-success" href="{{route('members.index', ['member_id'=>$row['stt']])}}" role="button">Profiles</a>
                 <a name="" id="" class="btn btn-outline-primary" href="#" role="button">Export</a>
             </div>

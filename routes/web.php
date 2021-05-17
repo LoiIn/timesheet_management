@@ -54,8 +54,6 @@ Route::prefix('/')->middleware('login')->group(function () {
         Route::post('/{ts_id}/tasks/{id}/edit', 'TaskController@update')->name('tasks.update');
         Route::delete('/{ts_id}/tasks/{id}/delete', 'TaskController@destroy')->name('tasks.destroy');
 
-        //admin
-        Route::get('/admin/all', 'TimesheetController@getAll')->name('timesheets.admin_index');
     });
 
     Route::prefix('reports')->group(function () {
@@ -70,6 +68,10 @@ Route::prefix('/')->middleware('login')->group(function () {
         //export
         // Route::get('/admin/export', 'ExportController@exportCsv')->name('export');
         Route::get('/export/{member_id}', 'ReportController@export')->name('export');
+
+        //edit roles
+        Route::get('admin/members/{member_id}/edit-role', 'UserController@editRole')->name('members.edit_role');
+        Route::post('admin/members/{member_id}/edit-role', 'UserController@updateRole')->name('members.update_role');
     });
 });
  

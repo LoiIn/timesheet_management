@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Models\TimeSheet;
 use App\Models\Report;
-use App\Http\Requests\TimesheetRequest;
+use App\Http\Requests\Request;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ReportExport;
@@ -20,25 +20,6 @@ class ReportController extends Controller
     public function index(){
         $rs = $this->getReport();
         return view('report.index', ['reports'=>$rs]);
-    }
-
-    public function create(){
-    }
-
-    public function store(TimesheetRequest $request){
-       
-    }
-
-    public function edit($id){
-        
-    }
-
-    public function update(TimesheetRequest $request, $id){
-        
-    }
-
-    public function insertOrUpdate(TimesheetRequest $request, $id = ''){
-        
     }
 
     public function getReport(){

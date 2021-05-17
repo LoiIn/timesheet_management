@@ -7,6 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EditUserProfilesRequest;
+use App\Http\Requests\Request;
 use App\User;
 use App\Models\Report;
 use App\Models\TimeSheet;
@@ -71,4 +72,20 @@ class UserController extends Controller
             $item->delete();
         }
     }
+
+    public function editRole($memberId){
+        $roles = User::find($memberId)->roles->pluck('name');
+        $output = view('report.report-form', compact('roles'))->render();
+        return $output;
+    }
+
+    public function updateRole(Request $request, $memberId){
+        if($request->get('queries')){
+            $queries = $request->get('queries');
+            $roles = User::find($memberId)->roles->pluck('name')->toArray();
+            $diffRoles = array_diff($queries, $roles);
+            return $diffRoles;
+        }
+    }
+
 }
