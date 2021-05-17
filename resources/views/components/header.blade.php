@@ -10,17 +10,16 @@
       <nav class="nav-menu float-right d-none d-lg-block">
         <ul>
           <li class="active"><a href="{{route('home.index')}}">Home</a></li>
-          @if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager'))
-            <li class="drop-down">
-              <a href="">Timesheet</a>
-              <ul>
-                <li><a href="{{route('timesheets.index')}}">Me</a></li>
+          <li class="drop-down">
+            <a href="">Timesheet</a>
+            <ul>
+              <li><a href="{{route('timesheets.index')}}">Me</a></li>
+              @if (Auth::user()->hasRole('manager'))
                 <li><a href="{{route('timesheets.manage')}}">Teams</a></li>
-              </ul>
-            </li>            
-          @else
-            <li><a href="{{route('timesheets.index')}}">Timesheet</a></li> 
-          @endif       
+              @endif   
+              <li><a href="{{route('calendar.index')}}">Calendar</a></li> 
+            </ul>
+          </li>                         
           <li><a href="{{route('reports.index')}}">Report</a></li>
           @if (empty($username))
             <li><a href="{{route('login.index')}}">SignIn</a></li>

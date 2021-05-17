@@ -31,6 +31,9 @@ Route::prefix('/')->middleware('login')->group(function () {
         Route::post('/edit', 'UserController@update')->name('user.update');
     });
 
+    //calendar
+    Route::get('/calendar', 'CalendarController@index')->name('calendar.index');
+
     //timesheet & task
     Route::get('/manage-timesheets', 'TimesheetController@manage')->name('timesheets.manage');
     Route::get('/manage-timesheets/search', 'SearchController@getSearchForTimesheet')->name('timesheets.search');

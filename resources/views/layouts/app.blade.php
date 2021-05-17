@@ -31,6 +31,8 @@
   <link rel="stylesheet" href="{{asset('assets/css/datepicker.css')}}">
   <link rel="stylesheet" href="{{asset('assets/css/datepicker.date.css')}}">
 
+  <!-- Calendar css-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css"/>
 </head>
 
 <body>
@@ -61,10 +63,14 @@
 
   <!-- Template Main JS File -->
   <script src="{{asset('assets/js/main.js')}}"></script>
-  @yield('script')
-  <script>
-   
 
+  <!-- Calendar JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
+  
+  @yield('script')
+  @yield('calendarScript')
+  <script>
     $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
   </script>
 
