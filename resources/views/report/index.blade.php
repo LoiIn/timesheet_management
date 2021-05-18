@@ -65,6 +65,8 @@
 
             $('.edit-role-btn').click(function (e) { 
                 e.preventDefault();
+                dataId = $(this).attr('data-id');
+                $('.change-role-result').eq(dataId - 1).children('span').addClass('selector');
                 var url = $(this).attr('data-href');
                 $('#save-change-role-btn').attr('data-href', url);
                 $.ajax({
@@ -93,7 +95,9 @@
                     url: url,
                     data:  {queries: roles, _token:_token},
                     success: function (data) {
-                       console.log(data);
+                        $('#report-form-edit').modal('hide');
+                        $('.selector').fadeIn(); 
+                        $('.selector').html(data);
                     }
                 });
             });

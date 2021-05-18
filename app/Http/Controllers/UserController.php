@@ -11,6 +11,7 @@ use App\Http\Requests\Request;
 use App\User;
 use App\Models\Report;
 use App\Models\TimeSheet;
+use App\Models\Role;
 
 class UserController extends Controller
 {
@@ -82,9 +83,26 @@ class UserController extends Controller
     public function updateRole(Request $request, $memberId){
         if($request->get('queries')){
             $queries = $request->get('queries');
-            $roles = User::find($memberId)->roles->pluck('name')->toArray();
-            $diffRoles = array_diff($queries, $roles);
-            return $diffRoles;
+            $user = User::find($memberId);
+            $roles = $user->roles()->pluck('name')->toArray();
+            $diffRole1 = array_diff($queries, $roles);
+            $diffRole2 = array_diff($roles, $queries);
+            
+            if(count($diffRole1) != 0){
+                foreach($diffRole1 as $item){
+                    $roleId = Role::where('name', $item)->get()->first()->id;
+                    $user->roles()->attach((int)$roleId);
+                }
+            }
+
+            if(count($diffRole2) != 0){
+                foreach($diffRole2 as $item){
+                    $roleId = Role::where('name', $item)->get()->first()->id;
+                    $user->roles()->detach((int)$roleId);
+                }
+            }
+            
+            return convertRolesArrayToString(User::find($memberId)->roles()->pluck('name')->toArray());
         }
     }
 

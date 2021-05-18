@@ -13,9 +13,6 @@ function convertFormatDate($date_str){
 }
 
 function convertRolesArrayToString($roles){
-    $roles_arr = [];
-    foreach($roles as $role){
-        $roles_arr[] = $role->name;
-    }
-    return implode(", ", $roles_arr);
+    $sortedRoles = sort($roles);
+    return implode(", ", $roles);
 }

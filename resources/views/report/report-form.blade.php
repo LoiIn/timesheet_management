@@ -32,8 +32,13 @@
 <div class="form-group">
   <div class="form-check">
     <label class="form-check-label">
+      @if ($role == 'member')
+        <input type="checkbox" class="form-check-input" name="checked-role" id="" value="{{$role}}" checked onclick="return false;">
+        {{$role}}
+      @else
         <input type="checkbox" class="form-check-input" name="checked-role" id="" value="{{$role}}" checked>
         {{$role}}
+      @endif  
     </label>
   </div>
 </div>

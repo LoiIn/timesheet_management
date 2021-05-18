@@ -40,7 +40,7 @@ class ReportController extends Controller
 
     public function getReportOneUser($user){
         $report = Report::find($user->id);
-        $rolesStr = convertRolesArrayToString($user->roles);
+        $rolesStr = convertRolesArrayToString($user->roles()->pluck('name')->toArray());
         $item = [
             'stt' => $user->id,
             'month' => $report == null ? Carbon::now()->month : $report->month,
