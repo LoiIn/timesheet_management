@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\EditUserProfilesRequest;
 use App\Http\Requests\Request;
 use App\User;
 use App\Models\Report;
@@ -23,7 +20,7 @@ class UserController extends Controller
         return view('user.edit');
     }
 
-    public function update(EditUserProfilesRequest $request){
+    public function update(Request $request){
         
         $user = Auth::user();
         if($request->username != null) $user->username = $request->username;
@@ -54,22 +51,24 @@ class UserController extends Controller
 
     public function destroy($memberId){
         $member = Auth::user()->find($memberId);
-        if($memberId == 1){
-            return view('user.member', ['member'=>$member])->with('user-action-fail', 'You have not enough permission!');
-        }else{
-            $ts = TimeSheet::where('user_id', $memberId)->get(); 
-            if(count($ts) != 0) $this->destroyArr($ts);
-            $rp = Report::where('user_id', $memberId)->get();
-            if(count($rp) != 0) $this->destroyArr($rp);
-            $member->is_active = 2;
-            $member->save();
-            $roles = $member->roles()->pluck('name')->toArray();
-            foreach($roles as $role){
-                $roleId = Role::where('name', $role)->get()->first()->id;
-                $member->roles()->detach((int)$roleId);
+        if($this->authorize('delete', User::class)){
+            if($memberId == 1){
+                return view('user.member', ['member'=>$member])->with('user-action-fail', 'You must add admin roles for other people');
+            }else{
+                $ts = TimeSheet::where('user_id', $memberId)->get(); 
+                if(count($ts) != 0) $this->destroyArr($ts);
+                $rp = Report::where('user_id', $memberId)->get();
+                if(count($rp) != 0) $this->destroyArr($rp);
+                $member->is_active = 2;
+                $member->save();
+                $roles = $member->roles()->pluck('name')->toArray();
+                foreach($roles as $role){
+                    $roleId = Role::where('name', $role)->get()->first()->id;
+                    $member->roles()->detach((int)$roleId);
+                }
+                $member->delete();
+                return redirect()->route('reports.index');
             }
-            $member->delete();
-            return redirect()->route('reports.index');
         }
     }
 
@@ -80,10 +79,12 @@ class UserController extends Controller
     }
 
     public function editRole($memberId){
-        $roles = User::find($memberId)->roles()->pluck('name')->toArray();
-        sort($roles);
-        $output = view('report.report-form', compact('roles'))->render();
-        return $output;
+        if($this->authorize('updateRole', User::class)){
+            $roles = User::find($memberId)->roles()->pluck('name')->toArray();
+            sort($roles);
+            $output = view('report.report-form', compact('roles'))->render();
+            return $output;
+        }
     }
 
     public function updateRole(Request $request, $memberId){
@@ -111,5 +112,4 @@ class UserController extends Controller
             return convertRolesArrayToString(User::find($memberId)->roles()->pluck('name')->toArray());
         }
     }
-
 }

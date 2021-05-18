@@ -1,8 +1,13 @@
 <?php
 
-function getAvatarUrl($link){
+function getAvatarUrl($link, $type =''){
     if(empty($link)){
-        return 'assets/images/avatar.man.jpg';
+        if(empty($type)) return 'assets/images/man.jpg';
+        else{
+            $curURI = $_SERVER["REQUEST_URI"];
+            $arr = explode("/user-profiles", $curURI);
+            return $arr[0].'/assets/images/man.jpg';
+        }
     }else{
         return 'uploads/avatar/'.$link;
     }

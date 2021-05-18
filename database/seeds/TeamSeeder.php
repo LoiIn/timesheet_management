@@ -15,18 +15,22 @@ class TeamSeeder extends Seeder
             [
                 'leader_id' => 1,
                 'name' => 'ceo',
+                'created_at' => '1999-05-08',
             ],
             [
                 'leader_id' => 2,
                 'name' => 'developer',
+                'created_at' => '1999-05-08',
             ],
             [
                 'leader_id' => 3,
                 'name' => 'tester',
+                'created_at' => '1999-05-08',
             ],
             [
                 'leader_id' => 4,
                 'name' => 'HR',
+                'created_at' => '1999-05-08',
             ],
         ]);
     }

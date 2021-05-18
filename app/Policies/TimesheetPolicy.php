@@ -18,7 +18,7 @@ class TimesheetPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->hasRole('manager');
     }
 
     /**
@@ -30,7 +30,7 @@ class TimesheetPolicy
      */
     public function view(User $user, TimeSheet $timeSheet)
     {
-        return $user->id === $timeSheet->user_id;
+        return $user->id === $timeSheet->user_id || $user->hasRole('admin');
     }
 
     /**
@@ -41,7 +41,7 @@ class TimesheetPolicy
      */
     public function create(User $user)
     {
-        return $user->hasRole('manager');
+        return $user->hasRole('member');
     }
 
     /**
@@ -53,7 +53,10 @@ class TimesheetPolicy
      */
     public function update(User $user, TimeSheet $timeSheet)
     {
-        return ($user->id === $timeSheet->user_id || $user->hasRole('manager'));
+        if($user->id === $timeSheet->user_id) return true;
+        else if($user->hasRole('manager')){
+            return $timeSheet->user->hasRole('admin')? false : true;
+        }
     }
 
     /**
@@ -65,30 +68,6 @@ class TimesheetPolicy
      */
     public function delete(User $user, TimeSheet $timeSheet)
     {   
-        return $user->hasRole('manager');
-    }
-
-    /**
-     * Determine whether the user can restore the time sheet.
-     *
-     * @param  \App\User  $user
-     * @param  \App\TimeSheet  $timeSheet
-     * @return mixed
-     */
-    public function restore(User $user, TimeSheet $timeSheet)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the time sheet.
-     *
-     * @param  \App\User  $user
-     * @param  \App\TimeSheet  $timeSheet
-     * @return mixed
-     */
-    public function forceDelete(User $user, TimeSheet $timeSheet)
-    {
-        //
+        return $user->hasRole('admin');
     }
 }

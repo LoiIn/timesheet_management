@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use App\Models\TimeSheet;
 use App\User;
 
-class Export implements FromCollection, WithHeadings, WithMapping
+class ReportExport implements FromCollection, WithHeadings, WithMapping
 {
     protected $id;
     

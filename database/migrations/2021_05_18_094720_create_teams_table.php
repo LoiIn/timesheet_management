@@ -17,6 +17,8 @@ class CreateTeamsTable extends Migration
             $table->increments('id');
             $table->Integer('leader_id')->unsigned();
             $table->string('name');
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 

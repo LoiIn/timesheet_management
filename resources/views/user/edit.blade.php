@@ -53,7 +53,7 @@
                                 @php
                                     $avatar = Auth::user()->avatar
                                 @endphp
-                                <img src="{{getAvatarUrl($avatar)}}" alt="sing up image">
+                                <img src="{{getAvatarUrl($avatar, $type = 'edit')}}" alt="sing up image">
                             </div>
                         </div>
                     </div>

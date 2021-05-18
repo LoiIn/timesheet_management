@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use App\User;
@@ -22,7 +21,9 @@ class TaskController extends Controller
     }
 
     public function create(){
-        return view('timesheet.task-create');
+        if($this->authorize('create', Task::class)){
+            return view('timesheet.task-create');
+        }
     }
 
     public function store(TaskRequest $request, $timesheetId){
@@ -43,7 +44,9 @@ class TaskController extends Controller
 
     public function edit($timesheetId, $id){
         $task = Task::find($id);
-        return view('timesheet.task-edit', compact('task'));
+        if($this->authorize('update', $task)){
+            return view('timesheet.task-edit', compact('task'));
+        }
     }
 
     public function update(TaskRequest $request, $timesheetId, $id){
@@ -62,9 +65,11 @@ class TaskController extends Controller
 
     public function destroy($timesheetId, $id){ 
         $task = Task::find($id);
-        $task->timesheets()->detach((int)$timesheetId); 
-        $task->delete();
-        return redirect()->route('timesheets.index');
+        if($this->authorize('delete', $task)){
+            $task->timesheets()->detach((int)$timesheetId); 
+            $task->delete();
+            return redirect()->route('timesheets.index');
+        }
     }
 
 }

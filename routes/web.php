@@ -32,7 +32,7 @@ Route::prefix('/')->middleware('login')->group(function () {
     });
 
     //calendar
-    Route::get('/calendar', 'CalendarController@index')->name('calendar.index');
+    Route::get('/calendar', 'PageController@calendarIndex')->name('calendar.index');
 
     //timesheet & task
     Route::get('/manage-timesheets', 'TimesheetController@manage')->name('timesheets.manage');
@@ -66,7 +66,6 @@ Route::prefix('/')->middleware('login')->group(function () {
         Route::get('/admin/search', 'SearchController@getSearchForReport')->name('reports.search');
 
         //export
-        // Route::get('/admin/export', 'ExportController@exportCsv')->name('export');
         Route::get('/export/{member_id}', 'ReportController@export')->name('export');
 
         //edit roles

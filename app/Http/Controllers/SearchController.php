@@ -10,10 +10,8 @@ use Carbon\Carbon;
 
 class SearchController extends Controller
 {
-    function getSearchForReport(Request $request)
-    {   
-        if($request->get('queries'))
-        {
+    public function getSearchForReport(Request $request){   
+        if($request->get('queries')){
             $queries = $request->get('queries');
             $rs = [];
             $data = [];

@@ -14,6 +14,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         \App\Models\TimeSheet::class => \App\Policies\TimesheetPolicy::class,
+        \App\Models\Task::class => \App\Policies\TaskPolicy::class,
+        \App\User::class => \App\Policies\UserPolicy::class,
     ];
 
     /**
