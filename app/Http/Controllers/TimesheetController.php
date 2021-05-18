@@ -74,7 +74,7 @@ class TimesheetController extends Controller
         $month = $today->month;
         $report = Report::find($userId);
 
-        if($report === null || $report->month != $month){
+        if((int)$report->month != $month){
             Report::create([
                 'month' => $month,
                 'user_id' => $userId,

@@ -55,7 +55,7 @@ class UserController extends Controller
     public function destroy($memberId){
         $member = Auth::user()->find($memberId);
         if($memberId == 1){
-            return view('user.member', ['member'=>$member])->with('user-action-fail', 'You must make other come admin role!');
+            return view('user.member', ['member'=>$member])->with('user-action-fail', 'You have not enough permission!');
         }else{
             $ts = TimeSheet::where('user_id', $memberId)->get(); 
             if(count($ts) != 0) $this->destroyArr($ts);
@@ -63,6 +63,11 @@ class UserController extends Controller
             if(count($rp) != 0) $this->destroyArr($rp);
             $member->is_active = 2;
             $member->save();
+            $roles = $member->roles()->pluck('name')->toArray();
+            foreach($roles as $role){
+                $roleId = Role::where('name', $role)->get()->first()->id;
+                $member->roles()->detach((int)$roleId);
+            }
             $member->delete();
             return redirect()->route('reports.index');
         }
@@ -75,7 +80,8 @@ class UserController extends Controller
     }
 
     public function editRole($memberId){
-        $roles = User::find($memberId)->roles->pluck('name');
+        $roles = User::find($memberId)->roles()->pluck('name')->toArray();
+        sort($roles);
         $output = view('report.report-form', compact('roles'))->render();
         return $output;
     }

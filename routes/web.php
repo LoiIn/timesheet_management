@@ -63,7 +63,7 @@ Route::prefix('/')->middleware('login')->group(function () {
         Route::delete('/admin/members/{member_id}/delete', 'UserController@destroy')->name('members.destroy');
         
         //search
-        Route::post('/admin/search', 'SearchController@getSearchForReport')->name('reports.search');
+        Route::get('/admin/search', 'SearchController@getSearchForReport')->name('reports.search');
 
         //export
         // Route::get('/admin/export', 'ExportController@exportCsv')->name('export');

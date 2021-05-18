@@ -51,11 +51,10 @@
                 roleQuery     = $('#search-role select').find(":selected").val(),
                 monthQuery    = $('#search-month select').find(":selected").val(),
                 queries =[usernameQuery, roleQuery, monthQuery];
-            var _token = $('input[name="_token"]').val(); 
             $.ajax({
                 url:"{{route('reports.search')}}", 
-                method:"POST", 
-                data:{queries:queries, _token:_token},
+                method:"GET", 
+                data:{queries:queries},
                 success:function(data){ 
                 $('#search-report-result').fadeIn(); 
                 $('#search-report-result').html(data);

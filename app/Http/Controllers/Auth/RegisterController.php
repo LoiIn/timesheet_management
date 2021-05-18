@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\RegisterRequest;
 use Config;
+use App\Models\Report;
+use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
@@ -40,6 +42,16 @@ class RegisterController extends Controller
         $user = $this->create($request);
         
         if($user){
+            $user->roles()->attach(3);
+            $month = Carbon::now('Asia/Ho_Chi_Minh')->month;
+
+            Report::create([
+                'month' => $month,
+                'user_id' => $user->id,
+                'registrations_times' => 0,
+                'registrations_late_times' => 0, 
+            ]);
+
             return redirect('sign-in')->with('registerSuccess', 'Register successed, please login');
         }
         else{
@@ -86,7 +98,6 @@ class RegisterController extends Controller
             $avatar_path = '/uploads/avatar/';
             $avatar_name = time().$data->username."-".$file->getClientOriginalName();
             $file->move(public_path().$avatar_path, $avatar_name);
-            $user->avatar = $avatar_name;
         }
         $user =  User::create([
             'username' => $data->username,
