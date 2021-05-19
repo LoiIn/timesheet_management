@@ -10,43 +10,26 @@ use App\Models\Report;
 use App\Models\Team;
 use App\Http\Requests\TimesheetRequest;
 use Carbon\Carbon;
+use App\Services\Interfaces\TimesheetServiceInterface;
 
 class TimesheetController extends Controller
 {
+    protected $timesheetService;
+
+    public function __construct(TimesheetServiceInterface $timesheetService){
+        $this->timesheetService = $timesheetService;
+    }
+
     public function index(){
-        $userId = Auth::user()->id;
-        $timesheets = User::find($userId)->timesheets;
-        return view('timesheet.index', ['timesheets'=> $timesheets, 'tasks' => $this->getTasksOfTimesheets($timesheets)]);
+        $timesheets = $this->timesheetService->getTimesheetsByUser();
+        return view('timesheet.index', ['timesheets'=> $timesheets, 'tasks' => $this->timesheetService->getTasksOfTimesheets($timesheets)]);
     }
 
     public function manage(){
         if($this->authorize('viewAny', TimeSheet::class)){
-            if(Auth::user()->hasRole('admin')){
-                return view('timesheet.manage', ['timesheets'=> TimeSheet::all()]);
-            }elseif (Auth::user()->hasRole('manager')){
-                return view('timesheet.manage', ['timesheets'=> $this->getTimesheetsByTeam(Auth::user()->id)]);
-            }
+            $timesheets = Auth::user()->hasRole('admin') ? $this->timesheetService->getAllTimesheet() : $this->timesheetService->getTimesheetsByTeam(Auth::user()->id);
+            return view('timesheet.manage', compact('timesheets'));
         }
-    }
-
-    public function getTimesheetsByTeam($leaderId){
-        $team = Team::where('leader_id', $leaderId)->get()->first();
-        $members = $team->users;
-        $timesheets = [];
-        foreach($members as $member){
-            foreach($member->timesheets as $timesheet){
-                $timesheets[] = $timesheet;
-            }
-        }
-        return $timesheets;
-    }
-
-    public function getTasksOfTimesheets($timesheets = null){
-        $timesheetTasks = [];
-        foreach($timesheets as $ts){
-            $timesheetTasks[$ts->id] = TimeSheet::find($ts->id)->tasks;
-        }
-        return $timesheetTasks;
     }
 
     public function create(){
@@ -54,9 +37,7 @@ class TimesheetController extends Controller
             if(Auth::user()->hasRole('admin')){
                 return view('timesheet.timesheet-create');
             }else{
-                $userId = Auth::user()->id;
-                $timesheets = TimeSheet::where('user_id', $userId)->whereRaw('Date(created_at) = CURDATE()')->get()->pluck('created_at');
-                if(count($timesheets) == 0){
+                if($this->timesheetService->checkCreatedTimesheet() == 0){
                     return view('timesheet.timesheet-create');
                 }else{
                     return redirect()->route('timesheets.index')->with('ts-action-fail', 'Can only create up to one timesheet per day!');
@@ -66,34 +47,7 @@ class TimesheetController extends Controller
     }
 
     public function store(TimesheetRequest $request){
-        $request->all();
-
-        $userId = Auth::user()->id;
-        $today = Carbon::now('Asia/Ho_Chi_Minh');
-        $hour = $today->hour;
-        $month = $today->month;
-        $report = Report::find($userId);
-
-        if((int)$report->month != $month){
-            Report::create([
-                'month' => $month,
-                'user_id' => $userId,
-                'registrations_times' => 1,
-                'registrations_late_times' => $hour <= 9 ? 0 : 1, 
-            ]);
-        }else{
-            $report->registrations_times = $report->registrations_times + 1;
-            $report->registrations_late_times = $hour <=9 ? $report->registrations_late_times : $report->registrations_late_times + 1;
-            $report->save();
-        }
-
-        $ts = TimeSheet::create([
-            'user_id'  => $userId,
-            'problems' => $request->problems,
-            'plan'     => $request->plan,
-        ]);
-
-        if($ts){
+        if($this->timesheetService->createTimesheet($request)){
             return redirect()->route('timesheets.index')->with('ts-action-success', 'A new timesheet was added!');
         }else{
             return view('timesheet.timesheet-create')->with('ts-action-fail', 'Add new timesheet failed!');
@@ -101,20 +55,14 @@ class TimesheetController extends Controller
     }
 
     public function edit($id){
-        $timesheet = TimeSheet::find($id);
+        $timesheet = $this->timesheetService->getTimesheetById($id);
         if($this->authorize('update', $timesheet)){
             return view('timesheet.timesheet-edit', compact('timesheet'));
         }
     }
 
     public function update(TimesheetRequest $request, $id){
-        $request->all();
-
-        $ts = TimeSheet::find($id);
-        $ts->problems = $request->problems;
-        $ts->plan = $request->plan;
-
-        if($ts->save()){
+        if($this->timesheetService->updateTimesheet($request, $id)){
             return redirect()->route('timesheets.index')->with('ts-action-success', 'The timesheet was updated!');
         }else{
             return view('timesheet.timesheet-create')->with('ts-action-fail', 'Update timesheet fail!');
@@ -122,10 +70,10 @@ class TimesheetController extends Controller
     }
 
     public function destroy($id){
-        $timesheet = TimeSheet::find($id);
+        $timesheet = $this->timesheetService->getTimesheetById($id);
         if($this->authorize('delete', $timesheet)){
-            $timesheet->delete();
-            return redirect()->route('timesheets.manage');
+            $timesheets = $this->timesheetService->getAllTimesheet();
+            if($this->timesheetService->deleteTimesheet($timesheet)) redirect()->route('timesheets.manage', compact('timesheets'));
         }
     }
 }
