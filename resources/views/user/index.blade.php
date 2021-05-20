@@ -2,7 +2,7 @@
 
 @section('content')
     
-    @extends('components.header', ['username' => Auth::user()->username])  
+    @extends('components.header', ['username' => Auth::user()->username, 'nav_profile' => 'active'])  
     
     <!-- ======= About Section ======= -->
     <section class="about" data-aos="fade-up">

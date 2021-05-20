@@ -1,4 +1,5 @@
 <?php
+use Carbon\Carbon;
 
 function getAvatarUrl($link, $type =''){
     if(empty($link)){
@@ -14,7 +15,7 @@ function getAvatarUrl($link, $type =''){
 }
 
 function convertFormatDate($date_str){
-    return date('Y-m-d', strtotime($date_str));
+    return Carbon::parse($date_str)->format('Y-m-d');
 }
 
 function convertRolesArrayToString($roles){

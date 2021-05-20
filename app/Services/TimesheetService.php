@@ -20,7 +20,7 @@ class TimesheetService extends BaseService implements TimesheetServiceInterface
         $this->userService = $userService;
     }
 
-    public function getAllTimesheet(){
+    public function getAll(){
         return TimeSheet::all();
     }
 
@@ -86,22 +86,17 @@ class TimesheetService extends BaseService implements TimesheetServiceInterface
         $request->all();
 
         $timesheet = TimeSheet::find($id);
-        $timesheet->problems = $request->problems;
-        $timesheet->plan = $request->plan;
-        
-        return $timesheet->save();
+        $timesheet->update([
+            'problems' => $request->problems,
+            'plan'     => $request->plan
+        ]);
+
+        return $timesheet;
     }
 
     
     public function deleteTimesheet($timesheet = null){
-        if ($timesheet == null) return false;
-
-        $taskIds = $timesheet->tasks()->pluck('task_id')->toArray();
-        foreach($taskIds as $id){
-            $timesheet->tasks()->detach($id);
-        }
-
-        if($timesheet->delete()) return true;
+        return $timesheet->delete();
     }
 
     public function getTasksOfTimesheets($timesheets = null){

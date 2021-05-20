@@ -2,7 +2,7 @@
 
 @section('content')
     
-    @extends('components.header', ['username' => Auth::user()->username])  
+    @extends('components.header', ['username' => Auth::user()->username, 'nav_timesheet' => 'active'])  
     
     <!-- Sign up form -->
     <section class="about" >

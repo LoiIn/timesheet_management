@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Auth;
-use App\User;
-use App\Models\TimeSheet;
+use App\Http\Controllers\Controller;
+use App\Services\Interfaces\TaskServiceInterface;
 use App\Models\Task;
 use App\Http\Requests\TaskRequest;
-use Carbon\Carbon;
-use Config;
 
 class TaskController extends Controller
 {
+    protected $taskService;
+
+    public function __construct(TaskServiceInterface $taskService){
+        $this->taskService = $taskService;
+    }
 
     public function index($timesheetId){
-        $tasks = TimeSheet::find($timesheetId)->tasks;
+        $tasks = $this->taskService->getAllByTimesheetId($timesheetId);
         $output = view('timesheet.task', compact('tasks'))->render();
         return $output;
     }
@@ -27,15 +28,7 @@ class TaskController extends Controller
     }
 
     public function store(TaskRequest $request, $timesheetId){
-        $request->all();
-
-        $task = Task::create([
-            'content'  => $request->content,
-            'end_date' => convertFormatDate($request->end_date)
-        ]);
-        
-        if($task){
-            $task->timesheets()->attach($timesheetId);
+        if($this->taskService->createTask($request, $timesheetId)){
             return redirect()->route('timesheets.index')->with('task-action-success', 'A new task was added');
         }else{
             return view('timesheet.task-create')->with('task-action-fail', 'Add new task failed');
@@ -43,20 +36,14 @@ class TaskController extends Controller
     }
 
     public function edit($timesheetId, $id){
-        $task = Task::find($id);
+        $task = $this->taskService->getById($id);
         if($this->authorize('update', $task)){
             return view('timesheet.task-edit', compact('task'));
         }
     }
 
     public function update(TaskRequest $request, $timesheetId, $id){
-        $request->all();
-        
-        $task = Task::find($id);
-        $task->content = $request->content;
-        $task->end_date = $request->end_date;
-
-        if($task->save()){
+        if($this->taskService->updateTask($request, $id)){
             return redirect()->route('timesheets.index')->with('task-action-success', 'The task was updated');
         }else{
             return view('timesheet.task-create')->with('task-action-fail', 'Update task failed');
@@ -64,11 +51,13 @@ class TaskController extends Controller
     }
 
     public function destroy($timesheetId, $id){ 
-        $task = Task::find($id);
+        $task = $this->taskService->getById($id);
         if($this->authorize('delete', $task)){
-            $task->timesheets()->detach((int)$timesheetId); 
-            $task->delete();
-            return redirect()->route('timesheets.index');
+            if($this->taskService->deleteTask($timesheetId, $task)){
+                return redirect()->route('timesheets.index')->with('task-action-success', 'the task was deleted!');
+            }else{
+                return redirect()->route('timesheets.index')->with('task-action-fail', 'delete failed');
+            }
         }
     }
 

@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Request;
 use App\User;
 use App\Services\UserService;
 
 class UserController extends Controller
 {
-
     protected $userService; 
 
     public function __construct(UserService $userService){

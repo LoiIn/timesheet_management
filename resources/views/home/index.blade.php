@@ -4,6 +4,6 @@
     
     @extends('components.services')
     @extends('components.slidebar')
-    @extends('components.header', ['username' => Auth::user()->username])  
+    @extends('components.header', ['username' => Auth::user()->username, 'nav_home' => 'active'])  
     
 @endsection

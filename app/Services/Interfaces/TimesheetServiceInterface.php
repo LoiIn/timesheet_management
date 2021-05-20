@@ -8,7 +8,7 @@ use App\Http\Requests\Request;
 
 interface TimesheetServiceInterface extends BaseInterface
 {
-    public function getAllTimesheet();
+    public function getAll();
     public function getTimesheetsByUser();
     public function getTimesheetById($id);
     public function getTimesheetsByTeam($leaderId);

@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Auth;
-use App\User;
+use App\Http\Controllers\Controller;
+use App\Services\Interfaces\ReportServiceInterface;
 use App\Models\Report;
-use App\Http\Requests\Request;
-use Carbon\Carbon;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\ReportExport;
 
 class ReportController extends Controller
 {   
+    protected $reportService;
+
+    public function __construct(ReportServiceInterface $reportService){
+        $this->reportService = $reportService;
+    }
+
     public function index(){
-        $reports = Report::all();
+        $reports = $this->reportService->getAll();
         return view('report.index', compact('reports'));
     }
     
-    public function export($member_id){
-        return Excel::download(new ReportExport($member_id), 'timesheet.xlsx');
+    public function export($memberId){
+        return $this->reportService->export($memberId);
     }
 }

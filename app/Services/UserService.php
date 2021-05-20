@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Services\Interfaces\UserServiceInterface;
+use App\Services\Interfaces\FileServiceInterface;
+use App\Services\Interfaces\ReportServiceInterface;
 use App\Http\Requests\Request;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +16,15 @@ use App\Models\Report;
 
 class UserService extends BaseService implements UserServiceInterface
 {
+
+    protected $fileService;
+    protected $reportService;
+
+    public function __construct(FileServiceInterface $fileService, ReportServiceInterface $reportService){
+        $this->fileService = $fileService;
+        $this->reportService = $reportService;
+    }
+
     public function getAllUser(){
         return User::all();
     }
@@ -23,58 +34,30 @@ class UserService extends BaseService implements UserServiceInterface
     }
 
     public function updateUser(Request $request){
+        $request->all();
+
         $user = Auth::user();
-        if($request->username != null) $user->username = $request->username;
-    
-        if($request->email != null) $user->email = $request->email;
-
-        if($request->address != null)$user->address = $request->address;
-
-        if($request->birthday != null) $user->birthday = $request->birthday;
-
-        if($request->hasFile('re_avatar')){
-            $file = $request->re_avatar;
-            $avatarPath = '/uploads/avatar/';
-            $avatarName = time().$request->username."-".$file->getClientOriginalName();
-            $file->move(public_path().$avatarPath, $avatarName);
-            $user->avatar = $avatarName;
-        }
-
-        $user->save();
+        $user->update([
+            'username' => $request->username,
+            'email'    => $request->email,
+            'address'  => $request->address,
+            'birthday' => $request->birthday,
+            'avatar'   => $this->fileService->uploadAvatar($request, 're_avatar')
+        ]);
     }
 
     public function deleteUser($memberId){
         $member = $this->getUserById($memberId);
-        $timesheets = TimeSheet::where('user_id', $memberId)->get(); 
-        if(count($timesheets) != 0) $this->destroyModels($timesheets);
-        $reports = Report::where('user_id', $memberId)->get();
-        if(count($reports) != 0) $this->destroyModels($reports);
-        $member->is_active = 2;
-        $member->save();
-        $roles = $this->getRolesOfUser($member);
-        foreach($roles as $role){
-            $roleId = Role::where('name', $role)->get()->first()->id;
-            $member->roles()->detach((int)$roleId);
-        }
+        $member->timesheets()->delete();
+        $member->reports()->delete();
+        $member->update(['is_active' => 2]);
         $member->delete();
-    }
-
-    public function destroyModels($models){
-        foreach($models as $model){
-            $model->delete();
-        }
     }
 
     public function createUser(RegisterRequest $request){
         $request->all();
 
-        $avatar_name = '';
-        if($request->hasFile('avatar')){
-            $file = $request->avatar;
-            $avatar_path = '/uploads/avatar/';
-            $avatar_name = time().$request->username."-".$file->getClientOriginalName();
-            $file->move(public_path().$avatar_path, $avatar_name);
-        }
+        $avatar_name = $this->fileService->uploadAvatar($request, 'avatar');
         $user =  User::create([
             'username' => $request->username,
             'email'    => $request->email,
@@ -83,10 +66,11 @@ class UserService extends BaseService implements UserServiceInterface
             'birthday' => convertFormatDate($request->birthday),
             'avatar'   => $avatar_name
         ]);
+        if($user) $this->reportService->create($user);
+
         return $user;
     }
     
-
     public function getRolesOfUser($user){
         return $user->roles()->pluck('name')->toArray();
     }

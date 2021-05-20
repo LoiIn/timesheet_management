@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Routing\Controller as BaseController;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\User;
-use App\Models\TimeSheet;
-use App\Models\Report;
-use App\Models\Team;
 use App\Http\Requests\TimesheetRequest;
-use Carbon\Carbon;
 use App\Services\Interfaces\TimesheetServiceInterface;
+use App\Models\TimeSheet;
 
 class TimesheetController extends Controller
 {
@@ -27,7 +23,7 @@ class TimesheetController extends Controller
 
     public function manage(){
         if($this->authorize('viewAny', TimeSheet::class)){
-            $timesheets = Auth::user()->hasRole('admin') ? $this->timesheetService->getAllTimesheet() : $this->timesheetService->getTimesheetsByTeam(Auth::user()->id);
+            $timesheets = Auth::user()->hasRole('admin') ? $this->timesheetService->getAll() : $this->timesheetService->getTimesheetsByTeam(Auth::user()->id);
             return view('timesheet.manage', compact('timesheets'));
         }
     }
@@ -72,7 +68,7 @@ class TimesheetController extends Controller
     public function destroy($id){
         $timesheet = $this->timesheetService->getTimesheetById($id);
         if($this->authorize('delete', $timesheet)){
-            $timesheets = $this->timesheetService->getAllTimesheet();
+            $timesheets = $this->timesheetService->getAll();
             if($this->timesheetService->deleteTimesheet($timesheet)) redirect()->route('timesheets.manage', compact('timesheets'));
         }
     }

@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @extends('components.header', ['username' => Auth::user()->username])  
+    @extends('components.header', ['username' => Auth::user()->username, 'nav_report' => 'active'])  
     <div class="main-content">
         <section class="about" >
             <div class="container-fluid mt-5">

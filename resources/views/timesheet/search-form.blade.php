@@ -5,7 +5,7 @@
         <input id="search-username" type="text" class="form-control" placeholder="Username">
       </div>
       <div class="col form-group">
-        <input id="search-startDate" type="text" class="form-control choose-date" name="" id ="" placeholder="Choose startdate" value="">
+        <input id="search-startDate" type="text" class="form-control choose-date" name="" id ="" placeholder="Choose start date" value="">
       </div>
       <div class="col form-group">
         <input id="search-endDate" type="text" class="form-control choose-date" name="" id ="" placeholder="Choose end date" value="">

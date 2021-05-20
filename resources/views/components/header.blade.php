@@ -9,8 +9,8 @@
 
       <nav class="nav-menu float-right d-none d-lg-block">
         <ul>
-          <li class="active"><a href="{{route('home.index')}}">Home</a></li>
-          <li class="drop-down">
+          <li class="{{isset($nav_home) ? $nav_home : ''}}"><a href="{{route('home.index')}}">Home</a></li>
+          <li class="drop-down {{isset($nav_timesheet) ? $nav_timesheet : ''}}">
             <a href="">Timesheet</a>
             <ul>
               <li><a href="{{route('timesheets.index')}}">Me</a></li>
@@ -20,11 +20,11 @@
               <li><a href="{{route('calendar.index')}}">Calendar</a></li> 
             </ul>
           </li>                         
-          <li><a href="{{route('reports.index')}}">Report</a></li>
+          <li class="{{isset($nav_report) ? $nav_report : ''}}"><a href="{{route('reports.index')}}">Report</a></li>
           @if (empty($username))
-            <li><a href="{{route('login.index')}}">SignIn</a></li>
+            <li class="{{isset($nav_profile) ? $nav_profile : ''}}"><a href="{{route('login.index')}}">SignIn</a></li>
           @else
-            <li class="drop-down">
+            <li class="drop-down {{isset($nav_profile) ? $nav_profile : ''}}">
                 <a href="">{{ $username }}</a>
                 <ul>
                 <li><a href="{{route('user.index')}}">Profiles</a></li>
