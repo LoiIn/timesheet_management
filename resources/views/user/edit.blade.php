@@ -42,7 +42,8 @@
                                     <input type="file" name="re_avatar" id="re_avatar" class="img-fluid">
                                 </div>
                                 <div class="form-group form-button">
-                                    <input type="submit" name="" id="update-user" class="form-submit" value="Update"/>
+                                    <button type="submit" class="btn btn-success" form="edit-form">Save</button>
+                                    <a name="" id="" class="btn btn-primary" href="{{route('user.edit_pass')}}" role="button" >Change Pass</a>
                                     <a href="{{route('user.index')}}" class="btn btn-danger" role="button">Cancle</a>
                                 </div>
                             </form>

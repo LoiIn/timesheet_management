@@ -55,7 +55,7 @@ class TimesheetService extends BaseService implements TimesheetServiceInterface
         $request->all();
 
         $userId = Auth::user()->id;
-        $today = Carbon::now('Asia/Ho_Chi_Minh');
+        $today = Carbon::now();
         $hour = $today->hour;
         $month = $today->month;
         $report = Report::find($userId);

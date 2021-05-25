@@ -71,7 +71,8 @@
   @yield('script')
   @yield('calendarScript')
   <script>
-    $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+    // $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+    $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }});
   </script>
 
 </body>

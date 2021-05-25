@@ -7,12 +7,14 @@ use App\Services\Interfaces\FileServiceInterface;
 use App\Services\Interfaces\ReportServiceInterface;
 use App\Http\Requests\Request;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UpdatePasswordRequest;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Models\Role;
 use App\Models\TimeSheet;
 use App\Models\Task;
 use App\Models\Report;
+use Illuminate\Support\Facades\Hash;
 
 class UserService extends BaseService implements UserServiceInterface
 {
@@ -106,5 +108,20 @@ class UserService extends BaseService implements UserServiceInterface
             
             return convertRolesArrayToString($this->getAndSortRolesOfUser($memberId));
         }
+    }
+
+    public function saveNewPass(UpdatePasswordRequest $request){
+        $request->all();
+
+        $user = Auth::user();
+        $hashedPass = $user->password;
+        $curPass = $request->get('cur-password');
+        
+        if(!Hash::check($curPass, $hashedPass)) return false;
+
+        $user->update([
+            'password' => bcrypt($request->get('new-password')),
+        ]);
+        return true;
     }
 }

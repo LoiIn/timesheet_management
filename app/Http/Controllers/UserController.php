@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Request;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\User;
 use App\Services\UserService;
 
@@ -54,5 +55,16 @@ class UserController extends Controller
 
     public function updateRole(Request $request, $memberId){
         return $this->userService->updateRole($request, $memberId);
+    }
+
+    public function changePass(){
+        return view('user.edit-pass');
+    }
+
+    public function saveNewPass(UpdatePasswordRequest $request){
+        if(!$this->userService->saveNewPass($request)){
+            return redirect()->back()->with('resetFail', 'Update password fail');
+        }
+        return redirect()->route('logout')->with('resetSuccess', 'Update password success');
     }
 }

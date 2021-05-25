@@ -16,6 +16,10 @@ Route::prefix('/')->middleware('logout')->group(function () {
     Route::post('sign-in', 'Auth\LoginController@postLogin')->name('login');
     Route::get('sign-up', 'Auth\RegisterController@register')->name('register.index');
     Route::post('sign-up', 'Auth\RegisterController@postRegister')->name('register');
+    Route::get('forgot-password', 'Auth\ForgotPasswordController@index')->name('forgot.index');
+    Route::post('forgot-password', 'Auth\ForgotPasswordController@sendMail');
+    Route::get('password/reset', 'Auth\ForgotPasswordController@resetPass')->name('password.reset');
+    Route::post('password/reset', 'Auth\ForgotPasswordController@savePass');
 });
 
 Route::prefix('/')->middleware('login')->group(function () {
@@ -29,6 +33,8 @@ Route::prefix('/')->middleware('login')->group(function () {
         Route::get('/', 'UserController@index')->name('user.index');
         Route::get('/edit', 'UserController@edit')->name('user.edit');
         Route::post('/edit', 'UserController@update')->name('user.update');
+        Route::get('/edit-pass', 'Usercontroller@changePass')->name('user.edit_pass');
+        Route::post('/edit-pass', 'Usercontroller@saveNewPass');
     });
 
     //calendar

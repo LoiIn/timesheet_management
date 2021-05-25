@@ -29,7 +29,7 @@ class ReportService extends BaseService implements ReportServiceInterface
 
     public function create($user){
         $user->roles()->attach(3);
-        $month = Carbon::now('Asia/Ho_Chi_Minh')->month;
+        $month = Carbon::now()->month;
         Report::create([
             'month' => $month,
             'user_id' => $user->id,

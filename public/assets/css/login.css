@@ -767,5 +767,24 @@ label.valid:after {
     color: seagreen;
 }
 
+.button{
+    text-decoration: none;
+    padding-right: 10px;
+    margin: 10px 10px 0px 0px ;
+    transition: 0.4s;
+    color: black;
+}
+
+.sign-in-btn:hover{
+    font-weight: bolder;
+    color: green;
+    font-size: larger;
+}
+
+.sign-up-btn:hover{
+    font-weight: bolder;
+    color: red;
+    font-size: larger;
+}
 
 /*# sourceMappingURL=login.css.map */
