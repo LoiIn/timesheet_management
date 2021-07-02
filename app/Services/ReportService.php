@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Services\Interfaces\ReportServiceInterface;
 use App\Services\Interfaces\FileServiceInterface;
-use App\Http\Requests\Request;
 use App\Models\Report;
 use App\User;
 use Carbon\Carbon;

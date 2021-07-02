@@ -13,9 +13,9 @@ class FileService extends BaseService implements FileServiceInterface
     public function uploadAvatar(Request $request, $domName = ''){
         $avatarName = '';
         if($request->hasFile($domName)){
-            $file = $domName == 'avatar' ? $request->avatar : $request->re_avatar;
+            $file = $request->file($domName);
             $avatarPath = '/uploads/avatar/';
-            $avatarName = time().$request->username."-".$file->getClientOriginalName();
+            $avatarName = time()."-".$file->getClientOriginalName();
             $file->move(public_path().$avatarPath, $avatarName);
         }
         return $avatarName;

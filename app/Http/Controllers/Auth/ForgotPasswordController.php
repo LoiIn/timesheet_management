@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use App\User;
 use Illuminate\Support\Str;
 use App\Http\Requests\Request;
-use App\Http\Requests\ResetPasswordRequest;
+use App\Http\Requests\Users\ResetPasswordRequest;
 use Mail;
 
 class ForgotPasswordController extends Controller

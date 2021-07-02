@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\Services\Interfaces\TaskServiceInterface;
-use App\Http\Requests\Request;
-use App\Http\Requests\TaskRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TimeSheet;
 use App\Models\Task;
@@ -19,13 +17,13 @@ class TaskService extends BaseService implements TaskServiceInterface
         return TimeSheet::find($timesheetId)->tasks;
     }
 
-    public function createTask(TaskRequest $request, $timesheetId){
-        $request->all();
+    public function createTask(array $data, $timesheetId){
+        $params = [
+            'content'  => \Arr::get($data, 'content'),
+            'end_date' => convertFormatDate(\Arr::get($data, 'end_date'))
+        ];
+        $task = Task::create($params);
 
-        $task = Task::create([
-            'content'  => $request->content,
-            'end_date' => convertFormatDate($request->end_date)
-        ]);
         if($task){
             $task->timesheets()->attach($timesheetId);
             return true;
@@ -34,16 +32,14 @@ class TaskService extends BaseService implements TaskServiceInterface
         return false;
     }
 
-    public function updateTask(Request $request, $id){
-        $request->all();
-        
+    public function updateTask(array $data, $id){        
         $task = Task::find($id);
-        $task->update([
-            'content' => $request->content,
-            'end_date'=> $request->end_date
-        ]);
+        $params = [
+            'content' => \Arr::get($data, 'content'),
+            'end_date'=> \Arr::get($data, 'end_date')
+        ];
 
-        return $task;
+        return $task->update($params);
     }
 
     public function deleteTask($timesheetId, $task){

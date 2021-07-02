@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Services\Interfaces\TaskServiceInterface;
 use App\Models\Task;
-use App\Http\Requests\TaskRequest;
+use App\Http\Requests\Tasks\TaskRequest;
+use App\Http\Requests\Request;
 
 class TaskController extends Controller
 {
@@ -28,10 +29,12 @@ class TaskController extends Controller
     }
 
     public function store(TaskRequest $request, $timesheetId){
-        if($this->taskService->createTask($request, $timesheetId)){
-            return redirect()->route('timesheets.index')->with('task-action-success', 'A new task was added');
+        if($this->taskService->createTask($request->except('_token'), $timesheetId)){
+            $request->session()->flash('task-action-success', 'A new task was added');
+            return redirect()->route('timesheets.index');
         }else{
-            return view('timesheet.task-create')->with('task-action-fail', 'Add new task failed');
+            $request->session()->flash('task-action-fail', 'Add new task failed');
+            return view('timesheet.task-create');
         }
     }
 
@@ -43,20 +46,24 @@ class TaskController extends Controller
     }
 
     public function update(TaskRequest $request, $timesheetId, $id){
-        if($this->taskService->updateTask($request, $id)){
-            return redirect()->route('timesheets.index')->with('task-action-success', 'The task was updated');
+        if($this->taskService->updateTask($request->except('_token'), $id)){
+            $request->session()->flash('task-action-success', 'The task was updated');
+            return redirect()->route('timesheets.index');
         }else{
-            return view('timesheet.task-create')->with('task-action-fail', 'Update task failed');
+            $request->session()->flash('task-action-fail', 'Updat task failed');
+            return view('timesheet.task-create');
         }
     }
 
-    public function destroy($timesheetId, $id){ 
+    public function destroy($timesheetId, $id, Request $request){ 
         $task = $this->taskService->getById($id);
         if($this->authorize('delete', $task)){
             if($this->taskService->deleteTask($timesheetId, $task)){
-                return redirect()->route('timesheets.index')->with('task-action-success', 'the task was deleted!');
+                $request->session()->flash('task-action-success', 'the task was deleted!');
+                return redirect()->route('timesheets.index');
             }else{
-                return redirect()->route('timesheets.index')->with('task-action-fail', 'delete failed');
+                $request->session()->flash('task-action-fail', 'delete failed');
+                return redirect()->route('timesheets.index');
             }
         }
     }

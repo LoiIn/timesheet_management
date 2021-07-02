@@ -4,8 +4,6 @@ namespace App\Services;
 
 use App\Services\Interfaces\TimesheetServiceInterface;
 use App\Services\Interfaces\UserServiceInterface;
-use App\Http\Requests\Request;
-use App\Http\Requests\TimesheetRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TimeSheet;
 use App\Models\Team;
@@ -51,9 +49,7 @@ class TimesheetService extends BaseService implements TimesheetServiceInterface
         return count($timesheets);
     }
 
-    public function createTimesheet(TimesheetRequest $request){
-        $request->all();
-
+    public function createTimesheet(array $data){
         $userId = Auth::user()->id;
         $today = Carbon::now();
         $hour = $today->hour;
@@ -73,25 +69,23 @@ class TimesheetService extends BaseService implements TimesheetServiceInterface
             $report->save();
         }
 
-        $timesheet = TimeSheet::create([
+        $params = [
             'user_id'  => $userId,
-            'problems' => $request->problems,
-            'plan'     => $request->plan,
-        ]);
+            'problems' => \Arr::get($data, 'problems'),
+            'plan'     => \Arr::get($data, 'plan'),
+        ];
 
-        return $timesheet;
+        return TimeSheet::create($params);
     }
 
-    public function updateTimesheet(Request $request, $id){
-        $request->all();
-
+    public function updateTimesheet(array $data, $id){
         $timesheet = TimeSheet::find($id);
-        $timesheet->update([
-            'problems' => $request->problems,
-            'plan'     => $request->plan
-        ]);
+        $params = [
+            'problems' => \Arr::get($data, 'problems'),
+            'plan'     => \Arr::get($data, 'plan'),
+        ];
 
-        return $timesheet;
+        return $timesheet->update($params);
     }
 
     

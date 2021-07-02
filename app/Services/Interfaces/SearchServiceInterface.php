@@ -7,6 +7,6 @@ use App\Http\Requests\Request;
 
 interface SearchServiceInterface extends BaseInterface
 {
-    public function searchReport(Request $request);
-    public function searchTimesheet(Request $request);
+    public function searchReport(array $queries);
+    public function searchTimesheet(array $queries);
 }
