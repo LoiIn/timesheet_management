@@ -41,7 +41,7 @@
                       <td>{{isset($item->problems)? $item->problems : 'N/A'}}</td>
                       <td>{{isset($item->plan)? $item->plan : 'N/A'}}</td>
                       <td>
-                        <a name="" id="timesheet-detail-btn" class="btn btn-outline-success" data-href="{{route('tasks.index', $item->id)}}" role="button">Detail</a>
+                        <a name=""  class="btn btn-outline-success timesheet-detail-btn" data-href="{{route('tasks.index', $item->id)}}" role="button">Detail</a>
                         <a class="btn btn-outline-warning" href="{{route('timesheets.edit', $item->id)}}" role="button">Edit</a>
                         <a href="">
                           <form action="{{route('timesheets.destroy', $item->id)}}" method="post"  >
@@ -82,7 +82,7 @@
 @section('script')
     <script>
       $(function () {
-        $('#timesheet-detail-btn').click(function (e) { 
+        $('.timesheet-detail-btn').click(function (e) { 
           e.preventDefault();
           var url = $(this).attr('data-href');
           $.ajax({

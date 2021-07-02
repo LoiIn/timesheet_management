@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Users;
 
 use App\Http\Requests\Request;
 
-class TaskRequest extends Request
+class LoginRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,8 @@ class TaskRequest extends Request
     public function rules()
     {
         return [
-            'content'       => 'string|required',
-            'end_date'      => 'required',
+            'password'      => 'string|required|min:3|max:16',
+            'email'         => 'string|required|email:rfc,dns',
         ];
     }
-
 }

@@ -3,11 +3,7 @@
 namespace App\Services;
 
 use App\Services\Interfaces\UserServiceInterface;
-use App\Services\Interfaces\FileServiceInterface;
 use App\Services\Interfaces\ReportServiceInterface;
-use App\Http\Requests\Request;
-use App\Http\Requests\RegisterRequest;
-use App\Http\Requests\UpdatePasswordRequest;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Models\Role;
@@ -18,12 +14,9 @@ use Illuminate\Support\Facades\Hash;
 
 class UserService extends BaseService implements UserServiceInterface
 {
-
-    protected $fileService;
     protected $reportService;
 
-    public function __construct(FileServiceInterface $fileService, ReportServiceInterface $reportService){
-        $this->fileService = $fileService;
+    public function __construct(ReportServiceInterface $reportService){
         $this->reportService = $reportService;
     }
 
@@ -35,17 +28,18 @@ class UserService extends BaseService implements UserServiceInterface
         return User::find($id);
     }
 
-    public function updateUser(Request $request){
-        $request->all();
-
+    public function updateUser(string $avatarName, array $data){
         $user = Auth::user();
-        $user->update([
-            'username' => $request->username,
-            'email'    => $request->email,
-            'address'  => $request->address,
-            'birthday' => $request->birthday,
-            'avatar'   => $this->fileService->uploadAvatar($request, 're_avatar')
-        ]);
+        
+        $params = [
+            'username' => \Arr::get($data, 'username'),
+            'email'    => \Arr::get($data, 'email'),
+            'address'  => \Arr::get($data, 'address'),
+            'birthday' => \Arr::get($data, 'birthday'),
+            'avatar'   => $avatarName,
+        ];
+
+       return $user->update($params);
     }
 
     public function deleteUser($memberId){
@@ -56,21 +50,19 @@ class UserService extends BaseService implements UserServiceInterface
         $member->delete();
     }
 
-    public function createUser(RegisterRequest $request){
-        $request->all();
+    public function createUser(string $avatarName, array $data){
+        $params = [   
+            'username' => \Arr::get($data, 'username'),
+            'email'    => \Arr::get($data, 'email'),
+            'password' => bcrypt(\Arr::get($data, 'password')),
+            'address'  => \Arr::get($data, 'address'),
+            'birthday' => convertFormatDate(\Arr::get($data, 'birthday')),
+            'avatar'   => $avatarName
+        ];
 
-        $avatar_name = $this->fileService->uploadAvatar($request, 'avatar');
-        $user =  User::create([
-            'username' => $request->username,
-            'email'    => $request->email,
-            'password' => bcrypt($request->password),
-            'address'  => $request->address,
-            'birthday' => convertFormatDate($request->birthday),
-            'avatar'   => $avatar_name
-        ]);
+        $user = User::create($params);
         if($user) $this->reportService->create($user);
-
-        return $user;
+        return true;
     }
     
     public function getRolesOfUser($user){
@@ -84,43 +76,38 @@ class UserService extends BaseService implements UserServiceInterface
         return $roles;
     }
 
-    public function updateRole(Request $request, $memberId){
-        if($request->get('queries')){
-            $queries = $request->get('queries');
-            $user = $this->getUserById($memberId);
-            $roles = $this->getRolesOfUser($user);
-            $diffRole1 = array_diff($queries, $roles);
-            $diffRole2 = array_diff($roles, $queries);
-            
-            if(count($diffRole1) != 0){
-                foreach($diffRole1 as $item){
-                    $roleId = Role::where('name', $item)->get()->first()->id;
-                    $user->roles()->attach((int)$roleId);
-                }
+    public function updateRole($queries, $memberId){
+        $user = $this->getUserById($memberId);
+        $roles = $this->getRolesOfUser($user);
+        $diffRole1 = array_diff($queries, $roles);
+        $diffRole2 = array_diff($roles, $queries);
+        
+        if(count($diffRole1) != 0){
+            foreach($diffRole1 as $item){
+                $roleId = Role::where('name', $item)->get()->first()->id;
+                $user->roles()->attach((int)$roleId);
             }
-
-            if(count($diffRole2) != 0){
-                foreach($diffRole2 as $item){
-                    $roleId =  Role::where('name', $item)->get()->first()->id;
-                    $user->roles()->detach((int)$roleId);
-                }
-            }
-            
-            return convertRolesArrayToString($this->getAndSortRolesOfUser($memberId));
         }
+
+        if(count($diffRole2) != 0){
+            foreach($diffRole2 as $item){
+                $roleId =  Role::where('name', $item)->get()->first()->id;
+                $user->roles()->detach((int)$roleId);
+            }
+        }
+        
+        return convertRolesArrayToString($this->getAndSortRolesOfUser($memberId));
     }
 
-    public function saveNewPass(UpdatePasswordRequest $request){
-        $request->all();
-
+    public function saveNewPass(array $data){
         $user = Auth::user();
         $hashedPass = $user->password;
-        $curPass = $request->get('cur-password');
+        $curPass = \Arr::get($data, 'cur-password');
         
         if(!Hash::check($curPass, $hashedPass)) return false;
 
         $user->update([
-            'password' => bcrypt($request->get('new-password')),
+            'password' => bcrypt(\Arr::get($data, 'new-password')),
         ]);
         return true;
     }

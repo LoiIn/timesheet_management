@@ -14,15 +14,19 @@ class SearchController extends Controller
         $this->searchService = $searchService;
     }
 
-    public function getSearchForReport(Request $request){   
-        $reports = $this->searchService->searchReport($request);
-        $output = view('report.search-result', compact('reports'))->render();
-        return $output;
+    public function getSearchForReport(Request $request){
+        if($request->get('queries')){
+            $reports = $this->searchService->searchReport($request->get('queries'));
+            $output = view('report.search-result', compact('reports'))->render();
+            return $output;
+        }
     }
 
     public function getSearchForTimesheet(Request $request){
-        $timesheets = $this->searchService->searchReport($request);
-        $output = view('timesheet.search-result', compact('timesheets'))->render();
-        return $output;
+        if($request->get('queries')){
+            $timesheets = $this->searchService->searchTimesheet($request->get('queries'));
+            $output = view('timesheet.search-result', compact('timesheets'))->render();
+            return $output;
+        }
     }
 }

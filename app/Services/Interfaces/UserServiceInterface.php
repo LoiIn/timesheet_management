@@ -3,18 +3,17 @@
 namespace App\Services\Interfaces;
 
 use App\Services\Interfaces\BaseInterface;
-use App\Http\Requests\RegisterRequest;
-use App\Http\Requests\UpdatePasswordRequest;
-use App\Http\Requests\Request;
+use App\User;
 
 interface UserServiceInterface extends BaseInterface
 {
     public function getAllUser();
     public function getUserById($id);
-    public function createUser(RegisterRequest $request);
+    public function createUser(string $avatarName, array $data);
     public function deleteUser($id);
-    public function updateUser(Request $request);
-    public function getRolesOfUser($user);
+    public function updateUser(string $avatarName, array $data);
+    public function getRolesOfUser(User $user);
+    public function updateRole($queries, $memberId);
     public function getAndSortRolesOfUser($id);
-    public function saveNewPass(UpdatePasswordRequest $request);
+    public function saveNewPass(array $data);
 }

@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\TimesheetRequest;
+use App\Http\Requests\Request;
+use App\Http\Requests\Timesheets\TimesheetRequest;
 use App\Services\Interfaces\TimesheetServiceInterface;
 use App\Models\TimeSheet;
 
@@ -43,10 +44,12 @@ class TimesheetController extends Controller
     }
 
     public function store(TimesheetRequest $request){
-        if($this->timesheetService->createTimesheet($request)){
-            return redirect()->route('timesheets.index')->with('ts-action-success', 'A new timesheet was added!');
+        if($this->timesheetService->createTimesheet($request->except('_token'))){
+            $request->session()->flash('ts-action-success', 'A new timesheet was added!');
+            return redirect()->route('timesheets.index');
         }else{
-            return view('timesheet.timesheet-create')->with('ts-action-fail', 'Add new timesheet failed!');
+            $request->session()->flash('ts-action-fail', 'Add new timesheet failed!');
+            return view('timesheet.timesheet-create');
         }
     }
 
@@ -58,18 +61,26 @@ class TimesheetController extends Controller
     }
 
     public function update(TimesheetRequest $request, $id){
-        if($this->timesheetService->updateTimesheet($request, $id)){
-            return redirect()->route('timesheets.index')->with('ts-action-success', 'The timesheet was updated!');
+        if($this->timesheetService->updateTimesheet($request->except('_token'), $id)){
+            $request->session()->flash('ts-action-success', 'The timesheet was updated!');
+            return redirect()->route('timesheets.index');
         }else{
-            return view('timesheet.timesheet-create')->with('ts-action-fail', 'Update timesheet fail!');
+            $request->session()->flash('ts-action-fail', 'Update timesheet fail!');
+            return view('timesheet.timesheet-create');
         }
     }
 
-    public function destroy($id){
+    public function destroy(Request $request, $id){
         $timesheet = $this->timesheetService->getTimesheetById($id);
         if($this->authorize('delete', $timesheet)){
             $timesheets = $this->timesheetService->getAll();
-            if($this->timesheetService->deleteTimesheet($timesheet)) redirect()->route('timesheets.manage', compact('timesheets'));
+            if($this->timesheetService->deleteTimesheet($timesheet)){
+                $request->session()->flash('ts-action-success', 'The timesheet was deleted!');
+                return redirect()->route('timesheets.manage', compact('timesheets'));
+            }else{
+                $request->session()->flash('ts-action-fail', 'delete failed');
+                return redirect()->route('timesheets.index');
+            }
         }
     }
 }
