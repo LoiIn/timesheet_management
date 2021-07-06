@@ -11,6 +11,7 @@ use App\Models\TimeSheet;
 use App\Models\Task;
 use App\Models\Report;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class UserService extends BaseService implements UserServiceInterface
 {
@@ -110,5 +111,31 @@ class UserService extends BaseService implements UserServiceInterface
             'password' => bcrypt(\Arr::get($data, 'new-password')),
         ]);
         return true;
+    }
+
+    public function redirectToProvider($provider){
+        return Socialite::driver($provider)->redirect();
+    }
+
+    public function handleProviderCallback($provider){
+        $user = Socialite::driver($provider)->user();
+        $authUser = $this->mainProviderLogin($user);
+        return Auth::login($authUser);
+    }
+
+    public function mainProviderLogin($data){
+        $user = User::where('username', '=', $data->name)->first();
+        if($user) return $user;
+        else{
+            $params = [
+                'username' => $data->name,
+                'email'    => $data->email !== null ? $data->email : 'example@gmail.com',
+                'password' => bcrypt($data->id),
+            ];
+
+            $newUser = User::create($params);
+            $this->reportService->create($newUser);
+            return $newUser;
+        }
     }
 }

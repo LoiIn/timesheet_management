@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Users\LoginRequest;
+use App\Services\Interfaces\UserServiceInterface;
 
 class LoginController extends Controller
 {
@@ -25,6 +26,7 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
+    protected $userService;
 
     public function login(){
         return view('auth.login');
@@ -52,13 +54,37 @@ class LoginController extends Controller
         return redirect('sign-in');
     }
 
+    //google login
+    public function redirectToGoogle(){
+        return $this->userService->redirectToProvider('google');
+    }
+
+    //google callback
+    public function handleGoogleCallback(){
+        $this->userService->handleProviderCallback('google');
+        return redirect('home')->with('loginSuccess', 'Welcome our service!');
+    }
+
+    //facebook login
+    public function redirectToFacebook(){
+        return $this->userService->redirectToProvider('facebook');
+    }
+
+    //facebook callback
+    public function handleFacebookCallback(){
+        $this->userService->handleProviderCallback('facebook');
+        return redirect('home')->with('loginSuccess', 'Welcome our service!');
+    }
+
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserServiceInterface $userService)
     {
         $this->middleware('guest')->except('logout');
+        $this->userService = $userService;
     }
 }
