@@ -20,6 +20,12 @@ Route::prefix('/')->middleware('logout')->group(function () {
     Route::post('forgot-password', 'Auth\ForgotPasswordController@sendMail');
     Route::get('password/reset', 'Auth\ForgotPasswordController@resetPass')->name('password.reset');
     Route::post('password/reset', 'Auth\ForgotPasswordController@savePass');
+    
+    //socialite login
+    Route::get('sign-in/google', 'Auth\LoginController@redirectToGoogle')->name('login.google');
+    Route::get('sign-in/google/callback', 'Auth\LoginController@handleGoogleCallback');
+    Route::get('sign-in/facebook', 'Auth\LoginController@redirectToFacebook')->name('login.facebook');
+    Route::get('sign-in/facebook/callback', 'Auth\LoginController@handleFacebookCallback');
 });
 
 Route::prefix('/')->middleware('login')->group(function () {
