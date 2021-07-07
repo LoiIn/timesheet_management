@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Models\Report;
 use App\Models\TimeSheet;
-use Carbon\Carbon;
 
 class SearchService extends BaseService implements SearchServiceInterface
 {

@@ -60,6 +60,7 @@ Route::prefix('/')->middleware('login')->group(function () {
 
         // task
         Route::get('/{ts_id}/tasks', 'TaskController@index')->name('tasks.index');
+        Route::get('/tasks/{id}', 'TaskController@infor')->name('tasks.infor');
         Route::get('/{ts_id}/tasks/create', 'TaskController@create')->name('tasks.create');
         Route::post('/{ts_id}/tasks/create', 'TaskController@store')->name('tasks.store');
         Route::get('/{ts_id}/tasks/{id}/edit', 'TaskController@edit')->name('tasks.edit');

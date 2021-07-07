@@ -6,6 +6,8 @@ use App\Services\Interfaces\TaskServiceInterface;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TimeSheet;
 use App\Models\Task;
+use Carbon\Carbon;
+use Illuminate\Support\Arr;
 
 class TaskService extends BaseService implements TaskServiceInterface
 {
@@ -13,23 +15,47 @@ class TaskService extends BaseService implements TaskServiceInterface
         return Task::find($id);
     }
 
+    public function getAllTaskByUser(){
+        $timesheets = Auth::user()->timesheets;
+        $today = Carbon::now();
+        $tasks = [];
+        $taskIds = [];     
+           
+        foreach($timesheets as $ts){
+            $taskOfTs = Timesheet::find($ts->id)->tasks()->where('end_date', '>=' , $today)->get()->pluck('id')->toArray();
+            $taskIds = array_merge($taskIds, $taskOfTs);
+        }
+
+        $ids = array_unique($taskIds);
+        foreach($ids as $id){
+            $tasks[] = $this->getById($id);
+        }
+        return $tasks;
+    }
+
     public function getAllByTimesheetId($timesheetId){
         return TimeSheet::find($timesheetId)->tasks;
     }
 
     public function createTask(array $data, $timesheetId){
-        $params = [
-            'content'  => \Arr::get($data, 'content'),
-            'end_date' => convertFormatDate(\Arr::get($data, 'end_date'))
-        ];
-        $task = Task::create($params);
-
-        if($task){
-            $task->timesheets()->attach($timesheetId);
+        if(Timesheet::find($timesheetId)->tasks()->where('content', '=', \Arr::get($data, 'content'))->first()){
+            return false;
+        }else{
+            $task = Task::where('content', '=', \Arr::get($data, 'content'))->first();
+    
+            if(!$task){
+                $params = [
+                    'content'  => \Arr::get($data, 'content'),
+                    'end_date' => convertFormatDate(\Arr::get($data, 'end_date'))
+                ];
+                $newTask = Task::create($params);
+                $newTask->timesheets()->attach($timesheetId);
+            }else{
+                $task->timesheets()->attach($timesheetId);
+            }
+            
             return true;
         }
-
-        return false;
     }
 
     public function updateTask(array $data, $id){        

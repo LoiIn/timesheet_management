@@ -22,11 +22,12 @@ class TaskController extends Controller
         return $output;
     }
 
-    public function create(){
+    public function create($timesheetId){
         if($this->authorize('create', Task::class)){
-            return view('timesheet.task-create');
+            $tasks = $this->taskService->getAllTaskByUser();
+            return view('timesheet.task-create', compact('tasks'));
         }
-    }
+    }   
 
     public function store(TaskRequest $request, $timesheetId){
         if($this->taskService->createTask($request->except('_token'), $timesheetId)){
@@ -34,7 +35,8 @@ class TaskController extends Controller
             return redirect()->route('timesheets.index');
         }else{
             $request->session()->flash('task-action-fail', 'Add new task failed');
-            return view('timesheet.task-create');
+            $tasks = $this->taskService->getAllTaskByUser();
+            return view('timesheet.task-create', compact('tasks'));
         }
     }
 
@@ -51,7 +53,8 @@ class TaskController extends Controller
             return redirect()->route('timesheets.index');
         }else{
             $request->session()->flash('task-action-fail', 'Updat task failed');
-            return view('timesheet.task-create');
+            $task = $this->taskService->getById($id);
+            return view('timesheet.task-edit', compact('task'));
         }
     }
 
@@ -66,6 +69,11 @@ class TaskController extends Controller
                 return redirect()->route('timesheets.index');
             }
         }
+    }
+
+    public function infor($id){
+        $task = $this->taskService->getById($id);
+        return $task;
     }
 
 }
